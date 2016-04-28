@@ -1,0 +1,36 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# https://nette.org/security-warning
+#
+parameters:
+
+
+php:
+	date.timezone: Europe/Prague
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+extensions:
+	google: Kdyby\Google\DI\GoogleExtension
+
+google:
+	clientId: "1022078268346-su6ajbbehu23efq0v0tq8t3r88lpfb5q.apps.googleusercontent.com"
+	clientSecret: "QlrsqDBoT9VUcMSGijO8Znq1"
+	returnUri: 'Sign:in'(do=googleLogin-response)
+#	scopes: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+
+session:
+	expiration: 14 days
+
+
+services:
+	- App\Forms\FormFactory
+	- App\Forms\SignFormFactory
+	authenticator: App\Model\UsersModel
+	router: App\RouterFactory::createRouter
+#	cacheStorage:
+#		class: Nette\Caching\Storages\DevNullStorage

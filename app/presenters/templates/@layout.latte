@@ -1,0 +1,95 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>BEST Prague Members</title>
+
+	<link rel="stylesheet" href="{$basePath}/css/style.css">
+	<meta name="viewport" content="width=device-width">
+	<link rel="shortcut icon" href="{$basePath}/favicon.ico" type="image/x-icon">
+
+	<!--  Bootstrap start  -->        
+	<link href="{$basePath}/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="{$basePath}/css/bootstrap-social.css" rel="stylesheet" media="screen">
+	<link href="{$basePath}/css/bootstrap-table.min.css" rel="stylesheet">
+	<link href="{$basePath}/css/custom.css" rel="stylesheet" type="text/css">
+	<link href="{$basePath}/css/font-awesome.css" rel="stylesheet">
+	<!--  Bootstrap end  -->
+
+	{block head}{/block}
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="http://bestprague.cz">
+        	<img alt="BEST Prague" src="{$basePath}/images/bestprague.png">
+      </a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li {ifCurrent Homepage:}class="active"{/ifCurrent}><a n:href="Homepage:">LBG</a></li>
+	        <li {ifCurrent Board:}class="active"{/ifCurrent}><a n:href="Board:">Board</a></li>
+	        <li {ifCurrent Stats:}class="active"{/ifCurrent}><a n:href="Stats:">Statistiky</a></li>
+	        <!-- <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nástroje <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Export kontaktů</a></li> -->
+<!-- 	            <li><a href="#">Another action</a></li>
+	            <li><a href="#">Something else here</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Separated link</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">One more separated link</a></li> -->
+	          <!-- </ul> -->
+	        </li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	      	{if $user->isInRole('admin')}
+			    <li {ifCurrent Admin:}class="active"{/ifCurrent}><a n:href="Admin:">Administrace</a></li>
+			{/if}
+			{if $user->isLoggedIn()}
+	        <li><a n:href="Profile:show $user->getIdentity()->getId()">{$user->getIdentity()->name} {$user->getIdentity()->surname}</a></li>
+	        <li><a n:href="Sign:out">Odhlásit se</a></li>
+	        {else}
+	        <li><a n:href="Sign:in">Login</a></li>
+	        {/if}
+          </ul>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+
+	{include content}
+
+	{block scripts}
+	<script src="{$basePath}/js/jquery-2.2.2.min.js"></script>        
+	<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
+	<script src="{$basePath}/js/bootstrap.min.js"></script>
+	<script src="{$basePath}/js/bootstrap-table.js"></script>
+	<script src="{$basePath}/js/bootstrap-table-export.js"></script>
+	<script src="{$basePath}/js/table-export.js"></script>
+	<script src="{$basePath}/js/bootstrap-table-cs-CZ.js"></script>
+	<script src="{$basePath}/js/nette.ajax.js"></script>
+	<script src="{$basePath}/js/confirm-dialog.js"></script>
+	<script src="{$basePath}/js/main.js"></script>
+	{/block}
+</body>
+</html>

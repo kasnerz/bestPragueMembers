@@ -1,0 +1,81 @@
+{block head}
+
+{/block}
+
+
+{block content}
+
+<div class="pane">
+        <div id="members" class="tab-pane in active">
+
+          <table id="table" data-toggle="table"
+                data-search="true"
+                data-show-refresh="true"
+                data-show-toggle="true"
+                data-show-columns="true"
+                data-show-export="true"
+                data-minimum-count-columns="2"
+                data-id-field="id"
+                data-sortable="true"
+                data-row-style="rowStyle"
+                data-buttons-align="left"
+                data-search-align="left"
+                >
+                <thead>
+                    <tr>
+                        <th data-field="name" data-sortable="true">Jméno</th>
+                        <th data-field="email" data-sortable="true">Email</th>
+                        <th data-field="wg" data-sortable="true" data-align="center">WG</th>
+                        <th data-field="angel" data-sortable="true">Angel</th>
+                        <th data-field="telephone" data-sortable="true" data-align="right">Telefon</th>
+                        <th data-field="active" data-sortable="true" data-align="center">Aktivní</th>
+                        <th data-field="position" data-sortable="true">Pozice</th>
+                        <th data-field="joined" data-sortable="true">V BESTu od</th>
+                        <th data-field="tshirt" data-sortable="true" data-align="center">Tričko</th>
+                        <th data-field="fb" data-sortable="true" data-align="center">FB</th>    
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr n:foreach="$members as $member" n:class="$member->rank->name == 'Boardie' ? warning,
+                                                                $member->rank->name == 'Full member' ? info,
+                                                                $member->rank->name == 'Baby member' ? success,
+                                                                $member->rank->name == 'Alumni' ? active,
+                                                                $member->rank->name == 'Ex-member' ? active" > 
+                        <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
+                        <td>{$member->email}</td>
+                        <td>{$member->wg}</td>
+                        <td>{if $member->id_angel}{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}{else}-{/if}</td>
+                        <td>{$member->telephone}</td>
+                        <td>{$member->active ? ano : ne}</td>
+                        <td>{$member->rank->name}</td>
+                        <td>{$member->joined|date:'%m/%Y'}</td>
+                        <td>{$member->tshirt}</td>
+                        <td>{if "$member->fb" != ""} 
+                            <a class="btn btn-social-icon btn-facebook btn-xs" target="_blank" href={$member->fb}>
+                                <span class="fa fa-facebook"></span>
+                            </a>
+                           {/if}
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- <a n:href="googleLogin-open!">Login using google</a> -->
+<script>
+    var $table = $('#table');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('refreshOptions', {
+                exportDataType: $(this).val()
+            });
+        });
+    })
+</script>
+
+{/block}
+
+

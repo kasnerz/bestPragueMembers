@@ -1,0 +1,37 @@
+{block head}
+
+{/block}
+
+{block content}
+
+<div class="pane">
+  <div class="board">
+  <div n:class="panel, panel-primary">
+  <div class="panel-heading"><h3 class="panel-title">Board</h3></div>
+  <div class="panel-body">
+           <h3 style="margin-top: 5px">President</h3>
+           <p>
+           <a n:href="Profile:show $board['President']">
+           {$members->get($board['President'])->name} {$members->get($board['President'])->surname}
+           </a>
+           </p>
+
+           {foreach $board as $pos => $id_member}
+           {if $id_member and $pos != 'President'}
+           <h4>{$pos}</h4>
+             <p>
+             <a n:href="Profile:show $id_member">
+             {$members->get($id_member)->name} {$members->get($id_member)->surname}
+             </a>
+             </p>
+          {/if}
+          {/foreach}
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+{/block}
+
+

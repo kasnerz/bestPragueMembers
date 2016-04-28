@@ -1,0 +1,70 @@
+.admin {
+    margin: auto;
+    width: 50%;
+}
+
+.admin h4 {
+    text-align: center;
+}
+
+.board {
+    margin: auto;
+    margin-top: 25px;
+    width: 40%;
+    text-align: center;
+}
+
+.board h4 {
+    margin-top: 20px;
+}
+
+.btn-admin {
+    margin: auto;
+    width: 100%;
+}
+
+.login {
+    margin: auto;
+    margin-top: 20px;
+    width: 30%;
+}
+
+.modal {
+    margin: auto;
+}
+
+.navbar-brand {
+  padding-top: 5px;
+  padding-right: 20px;
+}
+
+.pane {
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+}
+
+.profile {
+    margin: auto;
+    width: 50%;
+}
+
+.profile-left {
+    width: 45%; 
+    float: left;
+    margin-left: 20px;
+} 
+
+.profile-right {
+    width: 30%; 
+    float: left;
+} 
+
+.profile h2 {
+    margin-left:20px;
+}
+
+.profile h4 {
+    margin-top:20px;
+}
+
