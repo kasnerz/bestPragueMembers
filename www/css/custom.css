@@ -23,6 +23,10 @@
     width: 100%;
 }
 
+.graph-small {
+    width: 450px;
+}
+
 .login {
     margin: auto;
     margin-top: 20px;

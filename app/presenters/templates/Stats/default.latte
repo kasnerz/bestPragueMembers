@@ -1,13 +1,45 @@
 {block head}
-
 {/block}
 
 {block content}
 
 <div class="pane">
-  <h4> TBA </h4>
+<div class="row">
+    <div class="col-md-4">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Počet členů</th>
+              </tr>
+            </thead>
+            <tbody>
+            {foreach $ranks as $rank}
+            <tr>
+                <td>{$rank["name"]} </td>
+                <td>{$rank["y"]}</td>
+            </tr>
+            {/foreach}
+            </tbody>
+          </table>
+
+        {include 'graphs.latte', ranks => $ranks_json}
+        <div id="container-ranks" class="graph graph-small"></div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+
+    </div>
 </div>
 
+
+
+
+
+
+
+
 {/block}
-
-
