@@ -23,12 +23,9 @@ google:
 session:
 	expiration: 14 days
 
-
 services:
 	- App\Forms\FormFactory
 	- App\Forms\SignFormFactory
 	- App\Model\UsersModel
 	authenticator: App\Model\AuthorizationModel
 	router: App\RouterFactory::createRouter
-#	cacheStorage:
-#		class: Nette\Caching\Storages\DevNullStorage

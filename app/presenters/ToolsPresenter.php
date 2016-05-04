@@ -3,7 +3,11 @@
 namespace App\Presenters;
 
 use Nette,
-    App\Model;
+    App\Model,
+    Nette\Application\UI\Form,
+    Nette\Application\Responses\FileResponse,
+    Nette\Latte,
+    Nette\Templating\Template;
 
 /**
  * Tools
@@ -24,9 +28,18 @@ class ToolsPresenter extends BaseSecuredPresenter
         $this->database = $database;
     }
 
-    public function renderDefault()
-    {
-        // $this->template->ranks = $this->statsModel->getRanks();
-        // $this->template->ranks_json = Nette\Utils\Json::encode($this->statsModel->getRanks());
+    public function actionExportContacts($id) {
+        $filename = __DIR__ . "/../../temp/best-prague-contacts.csv";
+        $contacts = $this->usersModel->getContacts();
+
+        $df = fopen("$filename", 'w');
+        fputcsv($df, array("First Name", "Last Name", "E-mail Address", "Mobile Phone"));
+
+        foreach ($contacts as $id => $row) {
+            fputcsv($df, array_values($row->toArray()));
+        }
+        fclose($df);
+
+        $this->sendResponse(new FileResponse($filename));
     }
 }

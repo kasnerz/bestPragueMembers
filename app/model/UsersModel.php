@@ -29,4 +29,17 @@ class UsersModel extends Nette\Object
         return $response;
     }
 
+    public function getContacts()
+    {
+        $null = NULL;
+
+        $contacts = $this->database->table("members_member")
+                    ->where("active", 1)
+                    ->where("telephone NOT", $null)
+                    ->select("name,surname,email,telephone")
+                    ->order("name ASC");
+
+        return $contacts;
+    }
+
 }
