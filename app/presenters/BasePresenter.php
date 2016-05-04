@@ -18,8 +18,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
     /** 
     * @inject
-    * @var \App\Model\UsersModel */
-    public $usersModel;
+    * @var \App\Model\AuthorizationModel */
+    public $authorizationModel;
 
 
     public function __construct()
@@ -59,7 +59,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
                 \Tracy\Debugger::log($me->email . "," . $me->id);   // log user login
 
                 try {
-                    $existing = $this->usersModel->findUser($me);
+                    $existing = $this->authorizationModel->findUser($me);
                 }  catch (Nette\Security\AuthenticationException $e) {
                     $this->flashMessage($e->getMessage());
                     return;

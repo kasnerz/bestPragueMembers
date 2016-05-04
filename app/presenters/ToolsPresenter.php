@@ -6,9 +6,9 @@ use Nette,
     App\Model;
 
 /**
- * Statistics
+ * Tools
  */
-class StatsPresenter extends BaseSecuredPresenter
+class ToolsPresenter extends BaseSecuredPresenter
 {
     /** @var Nette\Database\Context */
     private $database;
@@ -26,7 +26,7 @@ class StatsPresenter extends BaseSecuredPresenter
 
     public function renderDefault()
     {
-        $this->template->ranks = $this->usersModel->getRanks();
-        $this->template->ranks_json = Nette\Utils\Json::encode($this->usersModel->getRanks());
+        // $this->template->ranks = $this->statsModel->getRanks();
+        // $this->template->ranks_json = Nette\Utils\Json::encode($this->statsModel->getRanks());
     }
 }

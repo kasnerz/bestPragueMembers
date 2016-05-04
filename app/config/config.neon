@@ -27,8 +27,8 @@ session:
 services:
 	- App\Forms\FormFactory
 	- App\Forms\SignFormFactory
-	- App\Model\StatsModel
-	authenticator: App\Model\UsersModel
+	- App\Model\UsersModel
+	authenticator: App\Model\AuthorizationModel
 	router: App\RouterFactory::createRouter
 #	cacheStorage:
 #		class: Nette\Caching\Storages\DevNullStorage
