@@ -57,17 +57,11 @@
 	        <li {ifCurrent Homepage:}class="active"{/ifCurrent}><a n:href="Homepage:">LBG</a></li>
 	        <li {ifCurrent Board:}class="active"{/ifCurrent}><a n:href="Board:">Board</a></li>
 	        <li {ifCurrent Stats:}class="active"{/ifCurrent}><a n:href="Stats:">Statistiky</a></li>
-	        <!-- <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nástroje <span class="caret"></span></a>
+	        <li class="dropdown">
+	          <a href="#" {ifCurrent Tools:}class="active"{/ifCurrent} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nástroje <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <li><a href="#">Export kontaktů</a></li> -->
-<!-- 	            <li><a href="#">Another action</a></li>
-	            <li><a href="#">Something else here</a></li>
-	            <li role="separator" class="divider"></li>
-	            <li><a href="#">Separated link</a></li>
-	            <li role="separator" class="divider"></li>
-	            <li><a href="#">One more separated link</a></li> -->
-	          <!-- </ul> -->
+	            <li><a n:href="Tools:contacts">Export kontaktů</a></li>
+	          </ul>
 	        </li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
