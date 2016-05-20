@@ -8,6 +8,15 @@
 <div class="pane">
         <div id="members" class="tab-pane in active">
 
+         <div id="toolbar">
+            <!-- <div class="checkbox"> -->
+              <input type="checkbox" id="chkactive" data-toggle="toggle" data-on="Vše" data-off="Aktivní" data-size="small">
+            <!-- </div> -->
+
+            <!-- <button id="ok" type="submit" class="btn btn-default">Zobrazit neaktivní členy</button> -->
+            </div>
+
+        </div>
           <table id="table" data-toggle="table"
                 data-search="true"
                 data-show-refresh="true"
@@ -20,6 +29,8 @@
                 data-row-style="rowStyle"
                 data-buttons-align="left"
                 data-search-align="left"
+                data-toolbar="#toolbar"
+                data-toolbar-align="right"
                 >
                 <thead>
                     <tr>
@@ -64,16 +75,35 @@
     </div>
   </div>
 </div>
-<!-- <a n:href="googleLogin-open!">Login using google</a> -->
+
 <script>
-    var $table = $('#table');
+    var $table = $('#table'),
+     $chkactive = $('#chkactive'),
+     data = [];
+
     $(function () {
         $('#toolbar').find('select').change(function () {
             $table.bootstrapTable('refreshOptions', {
                 exportDataType: $(this).val()
             });
         });
+        data = $('#table').bootstrapTable('getData');
+        filterData('ano');
+
+        $('#chkactive').change(function() {
+            if ($(this).prop('checked')) {
+                filterData();
+            } else {
+                filterData('ano');
+            }
+        })
     })
+
+    function filterData(type) {
+        $table.bootstrapTable('load', $.grep(data, function (row) {
+            return !type || row.active == "ano";
+        }));
+    }
 </script>
 
 {/block}
