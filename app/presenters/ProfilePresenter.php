@@ -132,9 +132,11 @@ class ProfilePresenter extends BaseSecuredPresenter {
 
     public function postFormSucceeded($form, $values)
     {   
-        // Substitute empty values for NULL
-        foreach ($values as & $val) if ($val === '') $val = NULL;
-
+        // Substitute empty values with NULL
+        foreach ($values as $i => $value) {
+            if ($value === "") $values[$i] = NULL;
+        }
+       
         $id_member = $this->getParameter('id_member');
 
         // Editing existing member
