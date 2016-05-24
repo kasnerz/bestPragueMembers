@@ -34,7 +34,7 @@
                 >
                 <thead>
                     <tr>
-                        <th data-field="name" data-sortable="true">Jméno</th>
+                        <th data-field="name" data-sortable="true" data-sorter="nameSorter">Jméno</th>
                         <th data-field="email" data-sortable="true">Email</th>
                         <th data-field="wg" data-sortable="true" data-align="center">WG</th>
                         <th data-field="angel" data-sortable="true">Angel</th>
@@ -98,6 +98,14 @@
             }
         })
     })
+
+    // Sorting names in bootstrap table. Names have to be extracted from links.
+    function nameSorter(a, b) {
+        var aName = a.substring(a.indexOf(">")+1, a.lastIndexOf("<")); 
+        var bName = b.substring(b.indexOf(">")+1, b.lastIndexOf("<"));
+
+        return aName.localeCompare(bName);
+    }
 
     function filterData(type) {
         $table.bootstrapTable('load', $.grep(data, function (row) {
