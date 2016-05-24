@@ -59,7 +59,7 @@
                         <td>{$member->telephone}</td>
                         <td>{$member->active ? ano : ne}</td>
                         <td>{$member->rank->name}</td>
-                        <td>{$member->joined|date:'%m/%Y'}</td>
+                        <td>{$member->joined|date:'%Y/%m'}</td>
                         <td>{$member->tshirt}</td>
                         <td>{if "$member->fb" != ""} 
                             <a class="btn btn-social-icon btn-facebook btn-xs" target="_blank" href={$member->fb}>
