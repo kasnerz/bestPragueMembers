@@ -76,7 +76,10 @@ class ProfilePresenter extends BaseSecuredPresenter {
             $rank[$id] = $row['name'];
         }
 
-        $form->addSelect('id_rank', 'Pozice*', $rank);
+        if ($user->isInRole('admin')) {
+            $form->addSelect('id_rank', 'Pozice*', $rank);
+        }
+
         $form->addRadioList('gender', 'Pohlaví*', $sex)->setRequired('Hermafrodity neberem.');
 
         \Nella\Forms\DateTime\DateInput::register();
