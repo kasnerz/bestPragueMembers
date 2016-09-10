@@ -50,6 +50,12 @@ class ProfilePresenter extends BaseSecuredPresenter {
             'HR' => 'HR'
         );
 
+        $role = array(
+            'admin' => 'admin',
+            'member' => 'member',
+            'guest' => 'guest'
+        );
+
         $form = new Form;
 
         $form->addGroup('Základní informace');
@@ -76,14 +82,19 @@ class ProfilePresenter extends BaseSecuredPresenter {
             $rank[$id] = $row['name'];
         }
 
-        if ($user->isInRole('admin')) {
-            $form->addSelect('id_rank', 'Pozice*', $rank);
-        }
 
         $form->addRadioList('gender', 'Pohlaví*', $sex)->setRequired('Hermafrodity neberem.');
 
         \Nella\Forms\DateTime\DateInput::register();
         $form->addDate('joined', 'V BESTu od', 'Y-m')->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m', date("Y-m")));
+
+        if ($user->isInRole('admin')) {
+            $form->addGroup('Členství');
+
+            $form->addSelect('id_rank', 'Pozice*', $rank);
+            $form->addSelect('role', 'Role v DB*', $role)->setOption('description', '"guest" má přístup přes svůj účet i jako alumni a inactive');
+        }
+
 
         $form->addGroup('Další');
 
@@ -100,7 +111,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('nickname', 'Přezdívka');
         $form->addText('tshirt', 'Tričko');
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
-        $form->addCheckbox('active', ' člen je aktivní')->setDefaultValue(TRUE);
+        // $form->addCheckbox('active', ' člen je aktivní')->setDefaultValue(TRUE);
 
 
         $form->addSubmit('submit', 'Přidat');

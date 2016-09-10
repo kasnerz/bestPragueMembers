@@ -69,6 +69,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
                     // Email does not match, but user has signed in before
                     $this->flashMessage("Byl jsi přihlášen na základě google id, ale bacha - tvůj mail v databázi je $existing->email.");
                 }
+                if ($existing->role == "guest") {
+                    $this->flashMessage("Byl jsi přihlášen jako guest.");
+                }
+
                 /**
                  * Nette\Security\User accepts not only textual credentials,
                  * but even an identity instance!
