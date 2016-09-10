@@ -34,6 +34,7 @@
                 >
                 <thead>
                     <tr>
+                        <th data-field="image"></th>
                         <th data-field="name" data-sortable="true" data-sorter="nameSorter">Jméno</th>
                         <th data-field="email" data-sortable="true">Email</th>
                         <th data-field="wg" data-sortable="true" data-align="center">WG</th>
@@ -51,7 +52,17 @@
                                                                 $member->rank->name == 'Full member' ? info,
                                                                 $member->rank->name == 'Baby member' ? success,
                                                                 $member->rank->name == 'Alumni' ? active,
-                                                                $member->rank->name == 'Ex-member' ? active" > 
+                                                                $member->rank->name == 'Ex-member' ? active" >
+
+
+                        <td>
+                            {if $member->google_image != "" && $member->google_image != "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"}
+                            <img src={$member->google_image} style="width:24px;height:24px;">
+                            {else}
+                            <!-- <img src="http://dummyimage.com/32x32/b32700/ffffff.png&text=MV" style="width:32px;height:32px;"> -->
+                            <img src="{$basePath}/images/profile/{$member->id_member}.png" style="width:24px;height:24px;">
+                            {/if}
+                        </td>
                         <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                         <td>{$member->email}</td>
                         <td>{$member->wg}</td>
