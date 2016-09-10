@@ -58,7 +58,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('surname', 'Příjmení*')
             ->setRequired('Zadej i příjmení, jinak budeme mít problém udělat tomuhle člověku vizitku.');
         $form->addText('email', 'Email*')->addRule(Form::EMAIL, 'Ani tenhle člověk se nevyhne spamům, zadej ten mail pořádně :)')
-            ->setRequired('Ani tenhle člověk se nevyhne spamům, zadej i mail :)');
+            ->setRequired('Ani tenhle člověk se nevyhne spamům, zadej i mail.');
 
         $angels = array();
 
