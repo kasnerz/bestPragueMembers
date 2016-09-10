@@ -34,7 +34,7 @@
 
 
     <div class="profile">
-        <div n:class="panel, $member->active ? panel-primary : panel-default">
+        <div n:class="panel, $member->rank->active ? panel-primary : panel-default">
           <div class="panel-heading"><h3 class="panel-title">Profil člena</h3></div>
           <div class="panel-body">
             <h2 style="align: center;">{$member->name} {$member->surname} {if $member->nickname}({$member->nickname}){/if}
@@ -45,8 +45,8 @@
 
 
             <div class="profile-left">
-            <h4>Aktivní</h4>
-            <p>{$member->active ? ano : ne}</p>
+<!--             <h4>Aktivní</h4>
+            <p>{$member->rank->active ? ano : ne}</p> -->
             <h4>Pozice</h4>
             <p>
             {if $member->related('members_board_pos')->count("*") > 0}
