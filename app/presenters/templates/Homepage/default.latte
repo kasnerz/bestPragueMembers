@@ -57,7 +57,7 @@
                         <td>{$member->wg}</td>
                         <td>{if $member->id_angel}{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}{else}-{/if}</td>
                         <td>{$member->telephone}</td>
-                        <td>{$member->active ? ano : ne}</td>
+                        <td>{$member->rank->active ? ano : ne}</td>
                         <td>{$member->rank->name}</td>
                         <td>{$member->joined|date:'%Y/%m'}</td>
                         <td>{$member->tshirt}</td>
@@ -108,8 +108,10 @@
     }
 
     function filterData(type) {
+        $table.bootstrapTable('hideColumn', 'active');
+
         $table.bootstrapTable('load', $.grep(data, function (row) {
-            return !type || row.active == "ano";
+            return !type || row.active == 'ano';
         }));
     }
 </script>
