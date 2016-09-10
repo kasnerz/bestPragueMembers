@@ -21,7 +21,6 @@ class HomepagePresenter extends BaseSecuredPresenter
 
     public function renderDefault()
     {
-        $this->template->members = $this->database->table('members_member')
-            ->order('active DESC')->order('name ASC');
+        $this->template->members = $this->database->table('members_member')->order('name ASC');
     }
 }
