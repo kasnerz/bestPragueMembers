@@ -23,7 +23,7 @@ class BoardPresenter extends BaseSecuredPresenter
     public function renderDefault()
     {
         $this->template->members = $this->database->table('members_member')
-            ->order('active DESC')->order('name ASC');
+            ->order('name ASC');
 
         $board_pos = $this->database->table('members_board_pos');
 

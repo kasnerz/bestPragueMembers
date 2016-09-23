@@ -34,9 +34,9 @@ class UsersModel extends Nette\Object
         $null = NULL;
 
         $contacts = $this->database->table("members_member")
-                    ->where("active", 1)
+                    ->where("id_rank.active", 1)
                     ->where("telephone NOT", $null)
-                    ->select("name,surname,email,telephone")
+                    ->select("members_member.name,members_member.surname,members_member.email,members_member.telephone")
                     ->order("name ASC");
 
         return $contacts;
