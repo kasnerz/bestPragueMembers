@@ -13,17 +13,37 @@ class ProfilePresenter extends BaseSecuredPresenter {
     /** @var Nette\Database\Context */
     private $database;
 
+    /** 
+    * @inject
+    * @var \App\Model\UsersModel */
+    public $usersModel;
+
+    /** @var ImageStorage */
+    private $imageStorage;
+
     public function __construct(Nette\Database\Context $database)
     {
         parent::__construct();
         $this->database = $database;
     }
 
+    public function injectImages(\App\Model\ImageStorage $storage)
+    {
+        $this->imageStorage = $storage;
+    }
+
+
     public function renderShow($id_member){
         $this->template->members = $this->database->table('members_member');
         $this->template->member = $this->database->table('members_member')->get($id_member);
         $this->template->board = $this->database->table('members_board_pos');
         $this->template->rank = $this->database->table('members_rank');
+    }
+
+    public function beforeRender() {
+        $this->template->addFilter('getimage', function ($member) {
+            return $this->imageStorage->getProfileImage($member);
+        });
     }
 
     /**

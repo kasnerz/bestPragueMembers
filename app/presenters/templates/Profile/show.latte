@@ -39,7 +39,7 @@
           <div class="panel-body">
             <h2 style="align: center;">{$member->name} {$member->surname} {if $member->nickname}({$member->nickname}){/if}
             {if $member->image}
-             <img style="float: right; margin-right: 40px" src="{$basePath}/images/profile/{$member->id_member}.png" class="img-rounded" alt="Profile photo" width="50">
+             <img style="float: right; margin-right: 40px" src="{$member|getimage}" class="img-rounded" alt="Profile photo" width="50">
             {/if}
             </h2>
 

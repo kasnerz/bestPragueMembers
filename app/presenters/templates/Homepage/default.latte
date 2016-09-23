@@ -56,8 +56,8 @@
 
 
                         <td>
-             
-                            <img src="{$basePath}/images/profile/{$member->id_member}.png" style="width:24px;height:24px;">
+                            
+                            <img src={$member|getimage} style="width:24px;height:24px;">
                         </td>
                         <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                         <td>{$member->email}</td>

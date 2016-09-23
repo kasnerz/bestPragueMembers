@@ -41,5 +41,4 @@ class UsersModel extends Nette\Object
 
         return $contacts;
     }
-
 }
