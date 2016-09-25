@@ -59,7 +59,7 @@
                             
                             <img src={$member|getimage} style="width:24px;height:24px;">
                         </td>
-                        <td><i><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></i></td>
+                        <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                         <td>{$member->email}</td>
                         <td>{$member->wg}</td>
                         <td>{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
