@@ -38,7 +38,7 @@ class ImageStorage extends Nette\Object
         $image = $member->image;
 
         if ($image === '') {
-            if ($member->google_image === '') {
+            if (is_null($member->google_image)) {
                 $nameLetter = substr($member->name, 0, 1);
                 $surnameLetter = substr($member->surname, 0, 1);
                 $image = "https://dummyimage.com/512x512/" . $this->randColor() . "/fff.png&text=" . $nameLetter . $surnameLetter;

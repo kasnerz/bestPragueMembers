@@ -129,10 +129,13 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('tshirt', 'Tričko');
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
 
-        $form->addUpload('image', 'Fotka')->setOption('description', 'nejlépe ve čtvercovém formátu ;)')
-        ->setRequired(FALSE) // nepovinný
-        ->addRule(Form::IMAGE, 'Obrázek musí být JPEG, PNG nebo GIF.')
-        ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 128 kB.', 128 * 1024);
+        if ($id_member) { // user already exists
+             $form->addUpload('image', 'Fotka')->setOption('description', 'nejlépe ve čtvercovém formátu ;)')
+            ->setRequired(FALSE)
+            ->addCondition(Form::FILLED)->addRule(Form::IMAGE, 'Obrázek musí být JPEG, PNG nebo GIF.')
+            ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 128 kB.', 128 * 1024);
+        }
+       
 
 
         $form->addSubmit('submit', 'Přidat');
@@ -174,37 +177,24 @@ class ProfilePresenter extends BaseSecuredPresenter {
 
         $id_member = $this->getParameter('id_member');
 
-        $profileImage = $values['image'];
-
-        if ($profileImage->isImage() and $profileImage->isOk()) {
-
-            $file_ext=strtolower(mb_substr($profileImage->getSanitizedName(), strrpos($profileImage->getSanitizedName(), ".")));
-            $file_name = $id_member . $file_ext;
-            $profileImage->move($this->imageStorage->www_dir . '/' . $file_name);
-
-
-            // $image = Image::fromFile($this->imageStorage->www_dir . '/' . $file_name);
-            // if ($image->getWidth() > $image->getHeight()) {
-            //   $image->resize(512, NULL);
-            // }
-            // else {
-            //   $image->resize(NULL, 512);
-            // }
-
-            $values['image'] = $file_name;
-
-            
-            // $image->sharpen();
-            // $image->save(UPLOAD_DIR . '/data/thumbs/'. $file_name);
-        }
-       
-        
 
         // Editing existing member
         if ($id_member) {
             $member = $this->database->table('members_member')->get($id_member);
-            $this->flashMessage("Údaje byly upraveny.", 'success');
+
+            $profileImage = $values['image'];
+
+            if ($profileImage->isImage() and $profileImage->isOk()) {
+                $file_ext=strtolower(mb_substr($profileImage->getSanitizedName(), strrpos($profileImage->getSanitizedName(), ".")));
+                $file_name = $id_member . $file_ext;
+                $profileImage->move($this->imageStorage->www_dir . '/' . $file_name);
+                $values['image'] = $file_name;
+            } else {
+                $values['image'] = $member->image;
+            }
+
             $member->update($values);
+            $this->flashMessage("Údaje byly upraveny.", 'success');
             $this->redirect('Profile:show', $id_member);
         // Adding new member
         } else {
