@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use Nette,
+    Nette\Utils\Image,
     App\Model,
     Nette\Application\UI\Form;
 
@@ -67,8 +68,8 @@ class ProfilePresenter extends BaseSecuredPresenter {
         );
 
         $role = array(
-            'admin' => 'admin',
             'member' => 'member',
+            'admin' => 'admin',
             'guest' => 'guest'
         );
 
@@ -128,10 +129,10 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('tshirt', 'Tričko');
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
 
-        $form->addUpload('image', 'Fotka')
+        $form->addUpload('image', 'Fotka')->setOption('description', 'nejlépe ve čtvercovém formátu ;)')
         ->setRequired(FALSE) // nepovinný
-        ->addRule(Form::IMAGE, 'Avatar musí být JPEG, PNG nebo GIF.')
-        ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 64 kB.', 1024 * 1024 /* v bytech */);
+        ->addRule(Form::IMAGE, 'Obrázek musí být JPEG, PNG nebo GIF.')
+        ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 128 kB.', 128 * 1024);
 
 
         $form->addSubmit('submit', 'Přidat');
@@ -181,15 +182,18 @@ class ProfilePresenter extends BaseSecuredPresenter {
             $file_name = $id_member . $file_ext;
             $profileImage->move($this->imageStorage->www_dir . '/' . $file_name);
 
-            $values['image'] = $file_name;
 
-            // $image = \Nette\Image::fromFile(UPLOAD_DIR . '/data/'. $file_name);
-            // if($image->getWidth() > $image->getHeight()) {
-            //   $image->resize(140, NULL);
+            // $image = Image::fromFile($this->imageStorage->www_dir . '/' . $file_name);
+            // if ($image->getWidth() > $image->getHeight()) {
+            //   $image->resize(512, NULL);
             // }
             // else {
-            //   $image->resize(NULL, 140);
+            //   $image->resize(NULL, 512);
             // }
+
+            $values['image'] = $file_name;
+
+            
             // $image->sharpen();
             // $image->save(UPLOAD_DIR . '/data/thumbs/'. $file_name);
         }

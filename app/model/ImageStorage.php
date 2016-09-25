@@ -7,8 +7,8 @@ use Nette;
 
 class ImageStorage extends Nette\Object
 {
-    private $dir;
-    private $www_dir;
+    public $dir;
+    public $www_dir;
 
     public function __construct($dir)
     {
@@ -26,7 +26,7 @@ class ImageStorage extends Nette\Object
     }
 
     private function saveToCache($member, $image) {
-         $filename = $member->id_member . '.png';
+        $filename = $member->id_member . '.png';
 
         $this->save($filename, file_get_contents($image));
 
