@@ -61,7 +61,7 @@
             {/if}
             {if $member->id_angel}
             <h4>Angel</h4>
-            <p>{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</p>
+            <p><a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a></p>
             {/if}
             {if $member->joined}
             <h4>V BESTu od</h4>
