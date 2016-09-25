@@ -18,20 +18,16 @@ class ProfilePresenter extends BaseSecuredPresenter {
     * @var \App\Model\UsersModel */
     public $usersModel;
 
-    /** @var ImageStorage */
-    private $imageStorage;
+    /** 
+    * @inject
+    * @var \App\Model\ImageStorage */
+    public $imageStorage;
 
     public function __construct(Nette\Database\Context $database)
     {
         parent::__construct();
         $this->database = $database;
     }
-
-    public function injectImages(\App\Model\ImageStorage $storage)
-    {
-        $this->imageStorage = $storage;
-    }
-
 
     public function renderShow($id_member){
         $this->template->members = $this->database->table('members_member');
@@ -131,7 +127,11 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('nickname', 'Přezdívka');
         $form->addText('tshirt', 'Tričko');
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
-        // $form->addCheckbox('active', ' člen je aktivní')->setDefaultValue(TRUE);
+
+        $form->addUpload('image', 'Fotka')
+        ->setRequired(FALSE) // nepovinný
+        ->addRule(Form::IMAGE, 'Avatar musí být JPEG, PNG nebo GIF.')
+        ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 64 kB.', 1024 * 1024 /* v bytech */);
 
 
         $form->addSubmit('submit', 'Přidat');
@@ -170,8 +170,31 @@ class ProfilePresenter extends BaseSecuredPresenter {
         foreach ($values as $i => $value) {
             if ($value === "") $values[$i] = NULL;
         }
-       
+
         $id_member = $this->getParameter('id_member');
+
+        $profileImage = $values['image'];
+
+        if ($profileImage->isImage() and $profileImage->isOk()) {
+
+            $file_ext=strtolower(mb_substr($profileImage->getSanitizedName(), strrpos($profileImage->getSanitizedName(), ".")));
+            $file_name = $id_member . $file_ext;
+            $profileImage->move($this->imageStorage->www_dir . '/' . $file_name);
+
+            $values['image'] = $file_name;
+
+            // $image = \Nette\Image::fromFile(UPLOAD_DIR . '/data/'. $file_name);
+            // if($image->getWidth() > $image->getHeight()) {
+            //   $image->resize(140, NULL);
+            // }
+            // else {
+            //   $image->resize(NULL, 140);
+            // }
+            // $image->sharpen();
+            // $image->save(UPLOAD_DIR . '/data/thumbs/'. $file_name);
+        }
+       
+        
 
         // Editing existing member
         if ($id_member) {
