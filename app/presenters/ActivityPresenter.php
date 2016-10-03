@@ -159,26 +159,22 @@ class ActivityPresenter extends BaseSecuredPresenter {
         return $form;
     }
 
-    public function pointsFormSucceeded($form, $values)
-    {   
+    public function makeStringsNull($values) {
         foreach ($values as $i => $value) {
             if ($value === "") $values[$i] = NULL;
         }
+    }
 
-        // $id_member = $this->getParameter('id_member');
-
-        $points = $this->database->table('members_points')->insert($values);
-        $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
-        $this->redirect('Activity:default');
+    public function pointsFormSucceeded($form, $values)
+    {   
+        
+        $values[$values['id_member']] = TRUE;
+        $this->pointsFormBatchSucceeded($form, $values);
     }
 
     public function pointsFormBatchSucceeded($form, $values)
     {   
-
-
-        foreach ($values as $i => $value) {
-            if ($value === "") $values[$i] = NULL;
-        }
+        $this->makeStringsNull($values);
 
         $last_row = $this->database->table('members_points')->order('id_batch DESC')->fetch();
 
@@ -202,7 +198,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
             }
 
         }
-        $this->flashMessage("Hromadná aktivita byla úspěšně zapsána.", 'success');
+        $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
         $this->redirect('Activity:default');
     }
 }
