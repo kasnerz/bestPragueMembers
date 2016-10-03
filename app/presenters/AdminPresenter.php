@@ -22,5 +22,6 @@ class AdminPresenter extends BaseSecuredPresenter {
     public function renderDefault(){
         $this->template->members = $this->database->table('members_member');
         $this->template->board = $this->database->table('members_board_pos');
+        $this->template->points = $this->database->table('members_points');
     }
 }
