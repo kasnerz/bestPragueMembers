@@ -201,4 +201,11 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
         $this->redirect('Activity:default');
     }
+
+    public function handleDelete($id) {
+        $this->database->table('members_points')->get($id)->delete();
+        $this->flashMessage('Aktivita smazána.');
+        $this->redirect('Activity:');
+        // $this->redirect('Homepage:');
+    }
 }

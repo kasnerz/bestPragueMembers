@@ -23,17 +23,19 @@
                 >
                 <thead>
                     <tr>
+                        <th data-field="id" data-sortable="true">Id</th>
                         <th data-field="datetime" data-sortable="true">Datum</th>
                         <th data-field="points" data-sortable="true">Počet bodů</th>
                         <th data-field="name" data-sortable="true">Jméno</th>
                         <th data-field="activity" data-sortable="true">Aktivita</th>
                         <th data-field="description" data-sortable="true">Poznámky</th>
+                        <th data-field="remove" data-events=operateEvents>Akce</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr n:foreach="$points as $point">
                         {var $member = $members->get($point->id_member)}
-
+                        <td>{$point->id_points}</td>
                         <td>{$point->datetime|date:'%Y/%m/%d'}</td>
                         <td>{if $point->points}
                                 {$point->points}
@@ -53,6 +55,11 @@
                                 {$point->ref(id_activity)->description}
                             {/if}
                         </td>
+                        <td>
+                          <a class="remove" n:href="delete! $point->id_points" title="Remove">
+                            <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -62,7 +69,7 @@
 </div>
 
 <script>
-    
+   
 </script>
 
 {/block}
