@@ -29,7 +29,9 @@
                         <th data-field="name" data-sortable="true">Jméno</th>
                         <th data-field="activity" data-sortable="true">Aktivita</th>
                         <th data-field="description" data-sortable="true">Poznámky</th>
+                        {if $user->isInRole('admin')}
                         <th data-field="remove" data-events=operateEvents>Akce</th>
+                        {/if}
                     </tr>
                 </thead>
                 <tbody>
@@ -55,11 +57,13 @@
                                 {$point->ref(id_activity)->description}
                             {/if}
                         </td>
+                        {if $user->isInRole('admin')}
                         <td>
                           <a class="remove" n:href="delete! $point->id_points" title="Remove">
                             <i class="glyphicon glyphicon-remove"></i>
                             </a>
                         </td>
+                        {/if}
                     </tr>
                 </tbody>
             </table>
