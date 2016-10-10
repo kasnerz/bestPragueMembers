@@ -5,7 +5,7 @@
 
 <div class="pane">
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active"><a data-toggle="tab" href="#activity">Aktivita</a></li>
+      <li role="presentation" class="active"><a data-toggle="tab" href="#activity">TOP 10</a></li>
       <li role="presentation"><a data-toggle="tab" href="#members">Členové</a></li>
     </ul>
 
@@ -25,7 +25,7 @@
                     {var $i = 0}
                     {var $previousSum}
                     {foreach $points as $point}
-                    {breakIf $i > 3 && $previousSum > $point->sum}
+                    {breakIf $i > 10 && $previousSum > $point->sum}
                     <tr n:class="$i == 0 ? warning, $i == 1 ? info, $i == 2 ? active">
                         <td><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40">
                             {$point->name} {$point->surname} </td>
