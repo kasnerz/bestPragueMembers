@@ -1,50 +1,76 @@
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Měsíc</th>
-            <th>Počet nových členů</th>
-          </tr>
-        </thead>
-        <tbody>
-        {foreach $new_member_counts as $rank}
-        <tr>
-            <td>{$rank["join_date"]} </td>
-            <td>{$rank["y"]}</td>
-        </tr>
-        {/foreach}
-        </tbody>
-      </table>
         <script type="text/javascript">
         $(function () {
-            var data = {$new_member_counts_json|noescape},
+            var counts = {$new_member_counts_json|noescape},
                 name = 'Noví členové';
 
-            for (i in data) {
-                data[i]['name'] = data[i]['join_date']
+            var sorted_dates = Object.keys(counts).sort()
+            var from = sorted_dates[0].split('-') // 2008-07-01
+            var to = sorted_dates[sorted_dates.length-1].split('-') // 2017-10-01
+            var from_year = 2012, to_year=to[0];
+            var all_dates = []
+            for (var y=from_year; y<=to_year; y++) {
+                for (var m=1; m<=12; m++) {
+                    all_dates.push(y+'-'+(m>=10 ? m : '0'+m)+'-01')
+                }    
             }
+            var ranks = {}
+            for(date in counts) {
+                for(rank in counts[date]) {
+                    if(!(rank in ranks))
+                        ranks[rank] = true
+                }
+            }
+            ranks_sorted = Object.keys(ranks).sort()
+            var series = []
+            for(r in ranks_sorted) {
+                rank = ranks_sorted[r]
+                var data = []
+                for (i in all_dates) {
+                    var d = all_dates[i]
+                    var date = new Date(d)
+                    var m = date.getMonth() + 1;
+                    var y = date.getFullYear();
+                    name = m==1 ? y+' '+m : m+''
+
+                    if (d in counts && rank in counts[d])
+                        data.push({ name:name, date:d, names: counts[d][rank]['names'], y: counts[d][rank]['y'] })
+                    else
+                        data.push({ name:name, date:d, y:0, names: '' })
+                }
+                series.push({
+                    name: rank,
+                    data: data
+                })
+            }
+            console.log(series)
             var chart = $('#container-new-members').highcharts({
                 chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'area'
+                    type: 'area',
+                    width: 1600
                 },
                 title: {
                     text: ''
                 },
                 tooltip: {
-                    // pointFormat: '{ series.name }: <b>{ point.y }</b>'
+                    formatter: function() {
+                        return this.point.date + ':<br> ' + this.y + ' '+ this.series.name+':<br> '+this.point.names;
+                    }
                 },
-                series: [{
-                    name: name,
-                    colorByPoint: false,
-                    data: data
-                }]
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                    }
+                },
+                xAxis: {
+                    type: "category"
+                },
+                series: series
             });
         });
+
         </script>
     <div id="container-new-members" class="graph"></div>
     </div>

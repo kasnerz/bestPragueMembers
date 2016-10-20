@@ -30,9 +30,13 @@ class UsersModel extends Nette\Object
     }
     public function getJoinedStats(){
         $counts_arr = [];
-        $counts = $this->database->query('SELECT DATE_FORMAT(members_member.joined,"%Y-%m-01") as join_date, COUNT(members_member.id_member) as y FROM members_member GROUP BY (join_date) HAVING join_date IS NOT NULL ORDER BY join_date')->fetchPairs('join_date');
+        $counts = $this->database->query('SELECT DATE_FORMAT(members_member.joined,"%Y-%m-01") as join_date, members_rank.name as rank, COUNT(members_member.id_member) as y, GROUP_CONCAT(CONCAT(members_member.name," ",members_member.surname) SEPARATOR ", ") as names FROM members_member
+INNER JOIN members_rank ON members_rank.id_rank=members_member.id_rank
+GROUP BY join_date, rank HAVING join_date IS NOT NULL ORDER BY join_date');
         foreach ($counts as $id => $row) {
-            $counts_arr[] = ['join_date'=>$row['join_date'], 'y' => $row['y']];
+            if(!isset($counts_arr[$row['join_date']]))
+                $counts_arr[$row['join_date']] = [];
+            $counts_arr[$row['join_date']][$row['rank']] = ['join_date'=>$row['join_date'],'y' => $row['y'],'names'=>$row['names']];
         }
         return $counts_arr;
     }
