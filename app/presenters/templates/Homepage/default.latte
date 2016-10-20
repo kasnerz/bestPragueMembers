@@ -38,12 +38,13 @@
                         <th data-field="name" data-sortable="true" data-sorter="nameSorter">Jméno</th>
                         <th data-field="email" data-sortable="true">Email</th>
                         <th data-field="wg" data-sortable="true" data-align="center">WG</th>
-                        <th data-field="angel" data-sortable="true">Angel</th>
                         <th data-field="telephone" data-sortable="true" data-align="right">Telefon</th>
                         <th data-field="active" data-sortable="true" data-align="center">Aktivní</th>
                         <th data-field="position" data-sortable="true">Pozice</th>
                         <th data-field="joined" data-sortable="true">V BESTu od</th>
+                        <th data-field="gender" data-sortable="true">Pohlaví</th>
                         <th data-field="tshirt" data-sortable="true" data-align="center">Tričko</th>
+                        <th data-field="angel" data-sortable="true">Angel</th>
                         <th data-field="fb" data-sortable="true" data-align="center">FB</th>    
                     </tr>
                 </thead>
@@ -62,12 +63,13 @@
                         <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                         <td>{$member->email}</td>
                         <td>{$member->wg}</td>
-                        <td>{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
                         <td>{$member->telephone}</td>
                         <td>{$member->rank->active ? ano : ne}</td>
                         <td>{$member->rank->name}</td>
                         <td>{$member->joined|date:'%Y/%m'}</td>
                         <td>{$member->tshirt}</td>
+                        <td>{$member->gender}</td>
+                        <td>{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
                         <td>{if "$member->fb" != ""} 
                             <a class="btn btn-social-icon btn-facebook btn-xs" target="_blank" href={$member->fb}>
                                 <span class="fa fa-facebook"></span>
