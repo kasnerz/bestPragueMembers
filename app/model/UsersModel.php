@@ -29,10 +29,10 @@ class UsersModel extends Nette\Object
         return $response;
     }
     public function getJoinedStats(){
-        $counts_arr = []
+        $counts_arr = [];
         $counts = $this->database->query('SELECT DATE_FORMAT(members_member.joined,"%Y-%m-01") as join_date, COUNT(members_member.id_member) as y FROM members_member GROUP BY (join_date) HAVING join_date IS NOT NULL ORDER BY join_date')->fetchPairs('join_date');
         foreach ($counts as $id => $row) {
-            $counts_arr[] = {'join_date':$row['join_date'], 'y' : $row['y']}
+            $counts_arr[] = ['join_date'=>$row['join_date'], 'y' => $row['y']];
         }
         return $counts_arr;
     }
