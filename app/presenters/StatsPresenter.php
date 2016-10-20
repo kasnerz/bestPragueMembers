@@ -41,9 +41,9 @@ class StatsPresenter extends BaseSecuredPresenter
         $this->template->ranks = $this->usersModel->getRanks();
         $this->template->ranks_json = Nette\Utils\Json::encode($this->template->ranks);
 
-        $this->template->new_member_counts = $this->database->query('SELECT DATE_FORMAT(members_member.joined,"%Y-%m-01") as join_date, COUNT(members_member.id_member) as y FROM members_member GROUP BY (join_date) HAVING join_date IS NOT NULL ORDER BY join_date');
-        
-        $this->template->new_member_counts_json = Nette\Utils\Json::encode($this->template->new_member_counts);
+        $counts_arr = $this->usersModel->getJoinedStats();
+        $this->template->new_member_counts = $counts_arr;
+        $this->template->new_member_counts_json = Nette\Utils\Json::encode($counts_arr);
 
         $this->template->points = $this->database->query('SELECT members_member.id_member, members_member.name, members_member.surname, SUM( COALESCE( members_points.points, members_activities.points ) ) AS sum
                                                             FROM members_points
