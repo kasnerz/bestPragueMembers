@@ -2,10 +2,10 @@
 -- version 4.0.10.12
 -- http://www.phpmyadmin.net
 --
--- Host: localhost:3309
--- Generation Time: Sep 10, 2016 at 11:03 PM
--- Server version: 5.1.73-14.12-log
--- PHP Version: 5.5.9-1ubuntu4.9
+-- Počítač: localhost:3309
+-- Vygenerováno: Čtv 20. říj 2016, 17:13
+-- Verze serveru: 5.1.73-14.12-log
+-- Verze PHP: 5.5.9-1ubuntu4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
