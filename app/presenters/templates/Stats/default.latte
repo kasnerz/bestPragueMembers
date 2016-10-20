@@ -3,6 +3,9 @@
 
 {block content}
 
+<script type='text/javascript' src='{$basePath}/js/highcharts.js'></script>
+<script src="{$basePath}/js/themes/grid-light.js"></script>
+
 <div class="pane">
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a data-toggle="tab" href="#activity">TOP 10</a></li>
@@ -67,29 +70,7 @@
         </div>
       </div>
       <div id="new_members" class="tab-pane">
-        <div class="row">
-            <div class="col-md-4">
-
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Měsíc</th>
-                    <th>Počet nových členů</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {foreach $new_member_counts as $rank}
-                <tr>
-                    <td>{$rank["join_date"]} </td>
-                    <td>{$rank["y"]}</td>
-                </tr>
-                {/foreach}
-                </tbody>
-              </table>
-
-            <div id="container-ranks" class="graph graph-small"></div>
-            </div>
-        </div>
+        
       </div>
     </div>
 </div>
