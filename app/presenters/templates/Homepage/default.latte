@@ -67,8 +67,8 @@
                         <td>{$member->rank->active ? ano : ne}</td>
                         <td>{$member->rank->name}</td>
                         <td>{$member->joined|date:'%Y/%m'}</td>
-                        <td>{$member->tshirt}</td>
                         <td>{$member->gender}</td>
+                        <td>{$member->tshirt}</td>
                         <td>{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
                         <td>{if "$member->fb" != ""} 
                             <a class="btn btn-social-icon btn-facebook btn-xs" target="_blank" href={$member->fb}>
