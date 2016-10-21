@@ -1,15 +1,42 @@
 <div class="row">
     <div class="col-md-12">
+        <div id="container-new-members" class="graph"></div>
+        <br>
+        <form action="" class="form-inline">
+            <div class="form-group">
+              <label for="nm_from_year">&nbsp;Od roku:</label>
+              <input type="number" class="form-control" id="nm_from_year" value="2012" size="6">&nbsp;
+            </div>
+            <div class="form-group">
+              <label for="nm_width">&nbsp;Šířka px:</label>
+              <input type="number" class="form-control" id="nm_width" value="" size="6">&nbsp;
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" id="nm_add"> Sečíst</label>
+                </div>
+            </div>
+        </form>
 
+    </div>
         <script type="text/javascript">
+        var new_counts = {$new_member_counts_json|noescape}
+             
         $(function () {
-            var counts = {$new_member_counts_json|noescape},
-                name = 'Noví členové';
-
+            showNewMemberChart();
+            $('.form-group input, .form-group select').change(showNewMemberChart)
+        });   
+        function showNewMemberChart(){
+            var from_year_limit = $('#nm_from_year').val()
+            var width = $('#nm_width').val()
+            var add = $('#nm_add').is(':checked')
+            if(!width) width = null
+            var counts = new_counts
+            var name = 'Noví členové';
             var sorted_dates = Object.keys(counts).sort()
             var from = sorted_dates[0].split('-') // 2008-07-01
             var to = sorted_dates[sorted_dates.length-1].split('-') // 2017-10-01
-            var from_year = from[0], to_year=to[0];
+            var from_year = from_year_limit ? from_year_limit : from[0], to_year=to[0];
             var all_dates = []
             for (var y=from_year; y<=to_year; y++) {
                 for (var m=1; m<=12; m++) {
@@ -46,10 +73,23 @@
                 })
             }
             console.log(series)
+            if(add) {
+                for(s in series) {
+                    var previous = 0
+                    var names = ''
+                    for(i in series[s]['data']) {
+                        var row = series[s]['data'][i]
+                        row['y'] += previous
+                        row['names'] += row['names'] ? ', '+names : names
+                        previous = row['y']
+                        names = row['names']
+                    }
+                }
+            }
             var chart = $('#container-new-members').highcharts({
                 chart: {
                     type: 'area',
-                    width: 1600
+                    width: width
                 },
                 title: {
                     text: ''
@@ -69,9 +109,7 @@
                 },
                 series: series
             });
-        });
+        }
 
         </script>
-    <div id="container-new-members" class="graph"></div>
-    </div>
 </div>
