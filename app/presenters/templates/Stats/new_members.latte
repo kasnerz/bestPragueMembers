@@ -9,7 +9,7 @@
             var sorted_dates = Object.keys(counts).sort()
             var from = sorted_dates[0].split('-') // 2008-07-01
             var to = sorted_dates[sorted_dates.length-1].split('-') // 2017-10-01
-            var from_year = 2012, to_year=to[0];
+            var from_year = from[0], to_year=to[0];
             var all_dates = []
             for (var y=from_year; y<=to_year; y++) {
                 for (var m=1; m<=12; m++) {
