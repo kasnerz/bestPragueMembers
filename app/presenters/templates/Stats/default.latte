@@ -3,6 +3,7 @@
 
 {block content}
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type='text/javascript' src='{$basePath}/js/highcharts.js'></script>
 <script src="{$basePath}/js/themes/grid-light.js"></script>
 
@@ -11,6 +12,7 @@
       <li role="presentation" class="active"><a data-toggle="tab" href="#activity">TOP 10</a></li>
       <li role="presentation"><a data-toggle="tab" href="#members">Členové</a></li>
       <li role="presentation"><a data-toggle="tab" href="#new_members">Noví členové</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#angel_tree">Angel tree</a></li>
     </ul>
 
     <div class="tab-content">
@@ -71,6 +73,9 @@
       </div>
       <div id="new_members" class="tab-pane">
             {include 'new_members.latte'}
+      </div>
+      <div id="angel_tree" class="tab-pane">
+            {include 'angel_tree.latte'}
       </div>
     </div>
 </div>

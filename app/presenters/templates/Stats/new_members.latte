@@ -4,6 +4,25 @@
         <br>
         <form action="" class="form-inline">
             <div class="form-group">
+              <label for="nm_from_year">&nbsp;Seskupit podle:</label>
+              <select class="form-control" id="nm_source">
+                <option value="rank">Členství</option>
+                <option value="gender">Pohlaví</option>
+                <option value="wg">Working group</option>
+              </select>
+              &nbsp;
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" id="nm_active"> Jen aktivní&nbsp;</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" id="nm_add"> Sečíst&nbsp;</label>
+                </div>
+            </div>
+            <div class="form-group">
               <label for="nm_from_year">&nbsp;Od roku:</label>
               <input type="number" class="form-control" id="nm_from_year" value="2012" size="6">&nbsp;
             </div>
@@ -11,16 +30,11 @@
               <label for="nm_width">&nbsp;Šířka px:</label>
               <input type="number" class="form-control" id="nm_width" value="" size="6">&nbsp;
             </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label><input type="checkbox" value="" id="nm_add"> Sečíst</label>
-                </div>
-            </div>
         </form>
 
     </div>
         <script type="text/javascript">
-        var new_counts = {$new_member_counts_json|noescape}
+        var join_stats = {$join_stats|noescape}
              
         $(function () {
             showNewMemberChart();
@@ -30,8 +44,9 @@
             var from_year_limit = $('#nm_from_year').val()
             var width = $('#nm_width').val()
             var add = $('#nm_add').is(':checked')
+            var active = $('#nm_active').is(':checked')
             if(!width) width = null
-            var counts = new_counts
+            var counts = join_stats[active ? 'active' : 'all'][$('#nm_source').val()]
             var name = 'Noví členové';
             var sorted_dates = Object.keys(counts).sort()
             var from = sorted_dates[0].split('-') // 2008-07-01
@@ -43,17 +58,17 @@
                     all_dates.push(y+'-'+(m>=10 ? m : '0'+m)+'-01')
                 }    
             }
-            var ranks = {}
+            var groups = {}
             for(date in counts) {
-                for(rank in counts[date]) {
-                    if(!(rank in ranks))
-                        ranks[rank] = true
+                for(group in counts[date]) {
+                    if(!(group in groups))
+                        groups[group] = true
                 }
             }
-            ranks_sorted = Object.keys(ranks).sort()
+            groups_sorted = Object.keys(groups).sort()
             var series = []
-            for(r in ranks_sorted) {
-                rank = ranks_sorted[r]
+            for(r in groups_sorted) {
+                group = groups_sorted[r]
                 var data = []
                 for (i in all_dates) {
                     var d = all_dates[i]
@@ -62,13 +77,13 @@
                     var y = date.getFullYear();
                     name = m==1 ? y+' '+m : m+''
 
-                    if (d in counts && rank in counts[d])
-                        data.push({ name:name, date:d, names: counts[d][rank]['names'], y: counts[d][rank]['y'] })
+                    if (d in counts && group in counts[d])
+                        data.push({ name:name, date:d, names: counts[d][group]['names'], y: counts[d][group]['y'] })
                     else
                         data.push({ name:name, date:d, y:0, names: '' })
                 }
                 series.push({
-                    name: rank,
+                    name: group ? group : '?',
                     data: data
                 })
             }
