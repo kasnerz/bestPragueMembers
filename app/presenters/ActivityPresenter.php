@@ -111,7 +111,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $form->addText('name', 'Název');
         $form->addTextArea('description', 'Popis');
 
-        $form->addText('points', 'Počet bodů')->setType('number');
+        $form->addText('points', 'Počet mrkví')->setType('number');
 
         $form->addDate('datetime', 'Datum*', 'Y-m-d')
               ->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m-d', date("Y-m-d")));
@@ -146,7 +146,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $form->addText('name', 'Název');
         $form->addTextArea('description', 'Popis');
 
-        $form->addText('points', 'Počet bodů')->setType('number');
+        $form->addText('points', 'Počet mrkví')->setType('number');
 
         $form->addDate('datetime', 'Datum*', 'Y-m-d')
               ->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m-d', date("Y-m-d")));
