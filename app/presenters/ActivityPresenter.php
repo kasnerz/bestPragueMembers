@@ -31,9 +31,10 @@ class ActivityPresenter extends BaseSecuredPresenter {
                     ->where("id_rank.active", 1)
                     ->select('id_member, members_member.name, members_member.surname')
                     ->order('name ASC');
-
-        $db_activities = $this->database->table('members_activities')->select('id_activity, name, points, description')->order('name');
-
+        
+        $db_activities = $this->database->table('members_activities')->select('id_activity, name, points, description')
+        ->order('name');
+        
         $this->activities = array();
 
         foreach ($db_activities as $id => $row) {
@@ -55,6 +56,18 @@ class ActivityPresenter extends BaseSecuredPresenter {
     public function renderDefault() {
         $this->template->members = $this->database->table('members_member');
         $this->template->points = $this->database->table('members_points')->order('id_points DESC');
+
+
+        $filterId = isset($_GET['id_member']) ? $_GET['id_member'] : null;
+        if($filterId) {
+            $this->template->members = $this->template->members->where("id_member", $filterId);
+            $this->template->points = $this->template->points->where("id_member", $filterId);
+        }
+        $filterMonth = isset($_GET['month']) ? $_GET['month'] : null;
+        if($filterMonth) {
+            $this->template->points = $this->template->points->where("datetime LIKE ?", str_replace('/','-',$filterMonth).'%');
+        }
+        
         $this->template->db_members = $this->db_members;
     }
 

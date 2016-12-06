@@ -4,13 +4,13 @@
         <div class="king-month">
             <h2>{$month}</h2>
             {foreach $group as $king}
-            <div class="king-person king-rank-{$iterator->counter}">
+            <a class="king-person king-rank-{$iterator->counter}" n:href="Activity:?id_member={$king->id_member}&month={$month}">
                 <div class="king-image" style="background-image: url({$king->id_member|getimage})">
                 <!--<img src=" circle TODO " />-->
                 </div>
                 <h3 class="king-name">{$king->name} {$king->surname}</h3>
                 <h4 class="king-points">{$king->total}</h4>
-            </div>
+            </a>
            {/foreach}
         </div>
        {/foreach}
