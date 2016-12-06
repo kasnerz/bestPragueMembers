@@ -23,7 +23,7 @@ class BoardPresenter extends BaseSecuredPresenter
     public function renderDefault()
     {
         $this->template->members = $this->database->table('members_member')
-            ->order('active DESC')->order('name ASC');
+            ->order('name ASC');
 
         $board_pos = $this->database->table('members_board_pos');
 
@@ -103,7 +103,10 @@ class BoardPresenter extends BaseSecuredPresenter
      */
     public function postFormSucceeded($form, $values)
     {
-        foreach ($values as & $val) if ($val === '') $val = NULL;
+        // Substitute empty values with NULL
+        foreach ($values as $i => $value) {
+            if ($value === "") $values[$i] = NULL;
+        }
 
         foreach ($values as $id_pos => $id_member) {
             $pos = $this->database->table('members_board_pos')->get($id_pos);
