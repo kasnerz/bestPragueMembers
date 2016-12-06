@@ -3,39 +3,105 @@
 
 {block content}
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type='text/javascript' src='{$basePath}/js/highcharts.js'></script>
+<script src="{$basePath}/js/themes/grid-light.js"></script>
+
 <div class="pane">
-<div class="row">
-    <div class="col-md-4">
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a data-toggle="tab" href="#activity">TOP 10</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#members">Členové</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#new_members">Noví členové</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#angel_tree">Angel tree</a></li>
+    </ul>
 
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Role</th>
-                <th>Počet členů</th>
-              </tr>
-            </thead>
-            <tbody>
-            {foreach $ranks as $rank}
-            <tr>
-                <td>{$rank["name"]} </td>
-                <td>{$rank["y"]}</td>
-            </tr>
-            {/foreach}
-            </tbody>
-          </table>
+    <div class="tab-content">
+        <div id="activity" class="tab-pane active">
+          <div class="row">
+                <div class="col-md-8">
 
-        {include 'graphs.latte', ranks => $ranks_json}
-        <div id="container-ranks" class="graph graph-small"></div>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Člen</th>
+                        <th>Počet mrkví</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {var $i = 0}
+                    {var $previousSum}
+                    {foreach $points as $point}
+                    {breakIf $i > 10 && $previousSum > $point->sum}
+                    <tr n:class="$i == 0 ? warning, $i == 1 ? info, $i == 2 ? active">
+                        <td><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40">
+                            {$point->name} {$point->surname} </td>
+                        <td><h4>{$point->sum}</h4></td>
+                    </tr>
+                    {php $previousSum = $point->sum}
+                    {php $i++}
+                    {/foreach}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
         </div>
-    </div>
+      <div id="members" class="tab-pane">
+        <div class="row">
+            <div class="col-md-4">
 
-    <div class="col-md-4">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Počet členů</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {foreach $ranks as $rank}
+                <tr>
+                    <td>{$rank["name"]} </td>
+                    <td>{$rank["y"]}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+              </table>
 
-
+            {include 'graphs.latte', ranks => $ranks_json}
+            <div id="container-ranks" class="graph graph-small"></div>
+            </div>
+        </div>
+      </div>
+      <div id="new_members" class="tab-pane">
+            {include 'new_members.latte'}
+      </div>
+      <div id="angel_tree" class="tab-pane">
+            {include 'angel_tree.latte'}
+      </div>
     </div>
 </div>
+<script>
+$(function(){
+  // to automatically resize charts when changing tabs
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+   console.log('Changing tabs'); window.dispatchEvent(new Event('resize')); 
+  })
 
+  $('.nav-tabs a').click(function(e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
 
+  // store the currently selected tab in the hash value
+  $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+    var id = $(e.target).attr("href").substr(1);
+    window.location.hash = id;
+  });
+
+  // on load of the page: switch to the currently selected tab
+  var hash = window.location.hash;
+  $('.nav-tabs a[href="' + hash + '"]').tab('show');
+})
+</script>
 
 
 

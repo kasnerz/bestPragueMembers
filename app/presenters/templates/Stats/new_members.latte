@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-md-12">
+        <div id="container-new-members" class="graph"></div>
+        <br>
+        <form action="" class="form-inline">
+            <div class="form-group">
+              <label for="nm_from_year">&nbsp;Seskupit podle:</label>
+              <select class="form-control" id="nm_source">
+                <option value="rank">Členství</option>
+                <option value="gender">Pohlaví</option>
+                <option value="wg">Working group</option>
+              </select>
+              &nbsp;
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" id="nm_active"> Jen aktivní&nbsp;</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label><input type="checkbox" value="" id="nm_add"> Sečíst&nbsp;</label>
+                </div>
+            </div>
+            <div class="form-group">
+              <label for="nm_from_year">&nbsp;Od roku:</label>
+              <input type="number" class="form-control" id="nm_from_year" value="2012" size="6">&nbsp;
+            </div>
+            <div class="form-group">
+              <label for="nm_width">&nbsp;Šířka px:</label>
+              <input type="number" class="form-control" id="nm_width" value="" size="6">&nbsp;
+            </div>
+        </form>
+
+    </div>
+        <script type="text/javascript">
+        var join_stats = {$join_stats|noescape}
+             
+        $(function () {
+            showNewMemberChart();
+            $('.form-group input, .form-group select').change(showNewMemberChart)
+        });   
+        function showNewMemberChart(){
+            var from_year_limit = $('#nm_from_year').val()
+            var width = $('#nm_width').val()
+            var add = $('#nm_add').is(':checked')
+            var active = $('#nm_active').is(':checked')
+            if(!width) width = null
+            var counts = join_stats[active ? 'active' : 'all'][$('#nm_source').val()]
+            var name = 'Noví členové';
+            var sorted_dates = Object.keys(counts).sort()
+            var from = sorted_dates[0].split('-') // 2008-07-01
+            var to = sorted_dates[sorted_dates.length-1].split('-') // 2017-10-01
+            var from_year = from_year_limit ? from_year_limit : from[0], to_year=to[0];
+            var all_dates = []
+            for (var y=from_year; y<=to_year; y++) {
+                for (var m=1; m<=12; m++) {
+                    all_dates.push(y+'-'+(m>=10 ? m : '0'+m)+'-01')
+                }    
+            }
+            var groups = {}
+            for(date in counts) {
+                for(group in counts[date]) {
+                    if(!(group in groups))
+                        groups[group] = true
+                }
+            }
+            groups_sorted = Object.keys(groups).sort()
+            var series = []
+            for(r in groups_sorted) {
+                group = groups_sorted[r]
+                var data = []
+                for (i in all_dates) {
+                    var d = all_dates[i]
+                    var date = new Date(d)
+                    var m = date.getMonth() + 1;
+                    var y = date.getFullYear();
+                    name = m==1 ? y+' '+m : m+''
+
+                    if (d in counts && group in counts[d])
+                        data.push({ name:name, date:d, names: counts[d][group]['names'], y: counts[d][group]['y'] })
+                    else
+                        data.push({ name:name, date:d, y:0, names: '' })
+                }
+                series.push({
+                    name: group ? group : '?',
+                    data: data
+                })
+            }
+            console.log(series)
+            if(add) {
+                for(s in series) {
+                    var previous = 0
+                    var names = ''
+                    for(i in series[s]['data']) {
+                        var row = series[s]['data'][i]
+                        row['y'] += previous
+                        row['names'] += row['names'] ? ', '+names : names
+                        previous = row['y']
+                        names = row['names']
+                    }
+                }
+            }
+            var chart = $('#container-new-members').highcharts({
+                chart: {
+                    type: 'area',
+                    width: width
+                },
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    formatter: function() {
+                        return this.point.date + ':<br> ' + this.y + ' '+ this.series.name+':<br> '+this.point.names;
+                    }
+                },
+                plotOptions: {
+                    area: {
+                        stacking: 'normal',
+                    }
+                },
+                xAxis: {
+                    type: "category"
+                },
+                series: series
+            });
+        }
+
+        </script>
+</div>

@@ -67,9 +67,10 @@ class AuthorizationModel extends Nette\Object implements NS\IAuthenticator
             if (!$row) {
                 throw new Nette\Security\AuthenticationException('Tvůj účet v databázi neexistuje. Pokud máš pocit, že je to jen chyba v matrixu, napiš na it@bestprague.cz s předmětem "POMOOOC, mě to nefunguje! Co mám dělat??"', self::IDENTITY_NOT_FOUND);
             }
-        } else if ($row->role == "guest") {
-            throw new Nette\Security\AuthenticationException('Bohužel, nemáš právo nakouknout dovnitř.  Pokud máš pocit, že je to jen chyba v matrixu, napiš na it@bestprague.cz s předmětem "POMOOOC, nemůžu se dostat dovnitř! Co mám dělat??"', self::IDENTITY_NOT_FOUND);
-        }
+        // Alumni etc. cannot use their account to get in unless they are listed as "guest"
+        } else if ($row->rank->access_right == 0 && $row->role != "guest") {
+            throw new Nette\Security\AuthenticationException('Bohužel, se statusem ' . $row->rank->name . ' nemáš právo nakouknout dovnitř.  Pokud máš pocit, že ti křivdíme, napiš na it@bestprague.cz s předmětem "POMOOOC, nemůžu se dostat dovnitř! Co mám dělat??"', self::IDENTITY_NOT_FOUND);
+        } 
         if ($row->google_image != $user->picture) {
             $row->update(array("google_image" => $user->picture));
         }

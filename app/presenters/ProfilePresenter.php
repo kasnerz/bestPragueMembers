@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use Nette,
+    Nette\Utils\Image,
     App\Model,
     Nette\Application\UI\Form;
 
@@ -12,6 +13,16 @@ use Nette,
 class ProfilePresenter extends BaseSecuredPresenter {
     /** @var Nette\Database\Context */
     private $database;
+
+    /** 
+    * @inject
+    * @var \App\Model\UsersModel */
+    public $usersModel;
+
+    /** 
+    * @inject
+    * @var \App\Model\ImageStorage */
+    public $imageStorage;
 
     public function __construct(Nette\Database\Context $database)
     {
@@ -24,6 +35,12 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $this->template->member = $this->database->table('members_member')->get($id_member);
         $this->template->board = $this->database->table('members_board_pos');
         $this->template->rank = $this->database->table('members_rank');
+    }
+
+    public function beforeRender() {
+        $this->template->addFilter('getimage', function ($member) {
+            return $this->imageStorage->getProfileImage($member);
+        });
     }
 
     /**
@@ -50,6 +67,12 @@ class ProfilePresenter extends BaseSecuredPresenter {
             'HR' => 'HR'
         );
 
+        $role = array(
+            'member' => 'member',
+            'admin' => 'admin',
+            'guest' => 'guest'
+        );
+
         $form = new Form;
 
         $form->addGroup('Základní informace');
@@ -58,7 +81,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('surname', 'Příjmení*')
             ->setRequired('Zadej i příjmení, jinak budeme mít problém udělat tomuhle člověku vizitku.');
         $form->addText('email', 'Email*')->addRule(Form::EMAIL, 'Ani tenhle člověk se nevyhne spamům, zadej ten mail pořádně :)')
-            ->setRequired('Ani tenhle člověk se nevyhne spamům, zadej i mail :)');
+            ->setRequired('Ani tenhle člověk se nevyhne spamům, zadej i mail.');
 
         $angels = array();
 
@@ -76,11 +99,19 @@ class ProfilePresenter extends BaseSecuredPresenter {
             $rank[$id] = $row['name'];
         }
 
-        $form->addSelect('id_rank', 'Pozice*', $rank);
+
         $form->addRadioList('gender', 'Pohlaví*', $sex)->setRequired('Hermafrodity neberem.');
 
         \Nella\Forms\DateTime\DateInput::register();
         $form->addDate('joined', 'V BESTu od', 'Y-m')->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m', date("Y-m")));
+
+        if ($user->isInRole('admin')) {
+            $form->addGroup('Členství');
+
+            $form->addSelect('id_rank', 'Pozice*', $rank);
+            $form->addSelect('role', 'Role v DB*', $role)->setOption('description', '"guest" má přístup přes svůj účet i jako alumni a inactive');
+        }
+
 
         $form->addGroup('Další');
 
@@ -97,7 +128,14 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addText('nickname', 'Přezdívka');
         $form->addText('tshirt', 'Tričko');
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
-        $form->addCheckbox('active', ' člen je aktivní')->setDefaultValue(TRUE);
+
+        if ($id_member) { // user already exists
+             $form->addUpload('image', 'Fotka')->setOption('description', 'nejlépe ve čtvercovém formátu ;)')
+            ->setRequired(FALSE)
+            ->addCondition(Form::FILLED)->addRule(Form::IMAGE, 'Obrázek musí být JPEG, PNG nebo GIF.')
+            ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 128 kB.', 128 * 1024);
+        }
+       
 
 
         $form->addSubmit('submit', 'Přidat');
@@ -132,16 +170,31 @@ class ProfilePresenter extends BaseSecuredPresenter {
 
     public function postFormSucceeded($form, $values)
     {   
-        // Substitute empty values for NULL
-        foreach ($values as & $val) if ($val === '') $val = NULL;
+        // Substitute empty values with NULL
+        foreach ($values as $i => $value) {
+            if ($value === "") $values[$i] = NULL;
+        }
 
         $id_member = $this->getParameter('id_member');
+
 
         // Editing existing member
         if ($id_member) {
             $member = $this->database->table('members_member')->get($id_member);
-            $this->flashMessage("Údaje byly upraveny.", 'success');
+
+            $profileImage = $values['image'];
+
+            if ($profileImage->isImage() and $profileImage->isOk()) {
+                $file_ext=strtolower(mb_substr($profileImage->getSanitizedName(), strrpos($profileImage->getSanitizedName(), ".")));
+                $file_name = $id_member . $file_ext;
+                $profileImage->move($this->imageStorage->www_dir . '/' . $file_name);
+                $values['image'] = $file_name;
+            } else {
+                $values['image'] = $member->image;
+            }
+
             $member->update($values);
+            $this->flashMessage("Údaje byly upraveny.", 'success');
             $this->redirect('Profile:show', $id_member);
         // Adding new member
         } else {
