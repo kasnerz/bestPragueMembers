@@ -3,11 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Počítač: localhost:3309
-<<<<<<< HEAD
--- Vygenerováno: Čtv 20. říj 2016, 17:40
-=======
 -- Vygenerováno: Čtv 20. říj 2016, 17:13
->>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
 -- Verze serveru: 5.1.73-14.12-log
 -- Verze PHP: 5.5.9-1ubuntu4.9
 
@@ -31,12 +27,8 @@ SET time_zone = "+00:00";
 -- Struktura tabulky `members_activities`
 --
 
-<<<<<<< HEAD
-CREATE TABLE IF NOT EXISTS `members_activities` (
-=======
 DROP TABLE IF EXISTS `members_activities`;
 CREATE TABLE `members_activities` (
->>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
   `id_activity` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   `points` int(45) DEFAULT NULL,
@@ -45,14 +37,6 @@ CREATE TABLE `members_activities` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
-<<<<<<< HEAD
--- Vyprázdnit tabulku před vkládáním `members_activities`
---
-
-TRUNCATE TABLE `members_activities`;
---
-=======
->>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
 -- Vypisuji data pro tabulku `members_activities`
 --
 
@@ -247,12 +231,8 @@ INSERT INTO `members_member` (`id_member`, `name`, `surname`, `nickname`, `email
 -- Struktura tabulky `members_points`
 --
 
-<<<<<<< HEAD
-CREATE TABLE IF NOT EXISTS `members_points` (
-=======
 DROP TABLE IF EXISTS `members_points`;
 CREATE TABLE `members_points` (
->>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
   `id_points` int(11) NOT NULL AUTO_INCREMENT,
   `id_batch` int(11) NOT NULL,
   `id_member` int(11) DEFAULT NULL,
@@ -267,14 +247,6 @@ CREATE TABLE `members_points` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=170 ;
 
 --
-<<<<<<< HEAD
--- Vyprázdnit tabulku před vkládáním `members_points`
---
-
-TRUNCATE TABLE `members_points`;
---
-=======
->>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
 -- Vypisuji data pro tabulku `members_points`
 --
 

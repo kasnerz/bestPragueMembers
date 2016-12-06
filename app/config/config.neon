@@ -27,10 +27,6 @@ services:
 	- App\Forms\FormFactory
 	- App\Forms\SignFormFactory
 	- App\Model\UsersModel
-<<<<<<< HEAD
-	imageStorage: App\Model\ImageStorage(/www/images/profile)
-=======
 	imageStorage: App\Model\ImageStorage(/members/www/images/profile)
->>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
 	authenticator: App\Model\AuthorizationModel
 	router: App\RouterFactory::createRouter
