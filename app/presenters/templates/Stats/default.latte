@@ -6,6 +6,27 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type='text/javascript' src='{$basePath}/js/highcharts.js'></script>
 <script src="{$basePath}/js/themes/grid-light.js"></script>
+<<<<<<< HEAD
+
+<div class="pane">
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a data-toggle="tab" href="#activity">TOP 10</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#king">TOP za měsíc</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#members">Členové</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#new_members">Noví členové</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#angel_tree">Angel tree</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="activity" class="tab-pane active">
+            {include 'activity.latte'}
+        </div>
+        <div id="king" class="tab-pane">
+            {include 'king.latte'}
+      </div>
+      <div id="members" class="tab-pane">
+            {include 'members.latte'}
+=======
 
 <div class="pane">
     <ul class="nav nav-tabs">
@@ -70,6 +91,7 @@
             <div id="container-ranks" class="graph graph-small"></div>
             </div>
         </div>
+>>>>>>> 3247b7cc26fff79c58c5c53b822dd08c257c4453
       </div>
       <div id="new_members" class="tab-pane">
             {include 'new_members.latte'}
