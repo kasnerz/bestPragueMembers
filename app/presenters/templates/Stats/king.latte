@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12">
+       {foreach $kings as $month => $group}
+        <div class="king-month">
+            <h2>{$month}</h2>
+            {foreach $group as $king}
+            <div class="king-person king-rank-{$iterator->counter}">
+                <div class="king-image" style="background-image: url({$king->id_member|getimage})">
+                <!--<img src=" circle TODO " />-->
+                </div>
+                <h3 class="king-name">{$king->name} {$king->surname}</h3>
+                <h4 class="king-points">{$king->total}</h4>
+            </div>
+           {/foreach}
+        </div>
+       {/foreach}
+    </div>
+    <style type="text/css">
+    .king-person {
+        display: inline-block;
+        margin-right: 40px;
+        margin-bottom: 30px;
+    }
+    .king-image {
+        background-size: cover;
+    }
+    .king-rank-1 .king-image {
+        width: 220px;
+        height: 220px;
+    }
+    .king-rank-2 .king-image {
+        width: 150px;
+        height: 150px;
+    }
+    .king-rank-3 .king-image {
+        width: 130px;
+        height: 130px;
+    }
+    .king-name {
+
+    }
+    .king-rank-1 {
+    }
+    .king-rank-2 {
+        font-size: 80%;
+    }
+    .king-rank-3 {
+        font-size: 70%;
+    }
+    </style>
+</div>

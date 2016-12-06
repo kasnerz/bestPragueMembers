@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Člen</th>
+            <th>Počet mrkví</th>
+          </tr>
+        </thead>
+        <tbody>
+        {var $i = 0}
+        {var $previousSum}
+        {foreach $points as $point}
+        {breakIf $i > 10 && $previousSum > $point->sum}
+        <tr n:class="$i == 0 ? warning, $i == 1 ? info, $i == 2 ? active">
+            <td><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40">
+                {$point->name} {$point->surname} </td>
+            <td><h4>{$point->sum}</h4></td>
+        </tr>
+        {php $previousSum = $point->sum}
+        {php $i++}
+        {/foreach}
+        </tbody>
+      </table>
+    </div>
+</div>

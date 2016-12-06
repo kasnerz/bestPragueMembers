@@ -67,5 +67,20 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
                                                             GROUP BY id_member
                                                             ORDER BY sum DESC');
 
+        $this->template->kings = [];
+        for($i=0;$i<12;$i++) {
+            $kingPeriod = date('Y/n', strtotime("-$i month"));
+            $this->template->kings[$kingPeriod] = $this->database->query("SELECT members_member.id_member,members_member.name,surname,
+    SUM(COALESCE(members_points.points,members_activities.points,0)) as total,
+    CONCAT(YEAR(members_points.datetime),'/',MONTH(members_points.datetime)) as period FROM `members_points` 
+    INNER JOIN `members_member` USING (id_member)
+    LEFT JOIN `members_activities` USING (id_activity)
+    GROUP BY members_member.id_member,period
+    HAVING period='$kingPeriod'
+    ORDER BY total DESC
+    LIMIT 3");
+        }
+        //print_r($this->template->kings);
+
     }
 }
