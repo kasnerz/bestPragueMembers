@@ -67,6 +67,27 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
                                                             GROUP BY id_member
                                                             ORDER BY sum DESC');
 
+
+            $months = array(date('Y/m', strtotime("now")), date('Y/m', strtotime("-1 month")));
+            $this->template->months = $months;
+            $this->template->points_month = [];
+
+            for($i=0; $i<2; $i++) {
+                $month = $months[$i];
+
+            $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,
+    SUM(COALESCE(members_points.points,members_activities.points,0)) as total,
+    DATE_FORMAT(members_points.datetime,'%Y/%m') as period FROM `members_points` 
+    INNER JOIN `members_member` USING (id_member)
+    LEFT JOIN `members_activities` USING (id_activity)
+    GROUP BY members_member.id_member,period
+    HAVING period='$month'
+    ORDER BY total DESC,members_member.joined DESC");
+
+            $this->template->points_month[$month] = $result;
+        }
+
+
         $this->template->kings = [];
         for($i=1;$i<12;$i++) {
             $kingPeriod = date('Y/m', strtotime("-$i month"));
@@ -79,7 +100,9 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
     HAVING period='$kingPeriod'
     ORDER BY total DESC,members_member.joined DESC
     LIMIT 3");
-            if($result and count($result)) {
+            \Tracy\Debugger::enable();
+            \Tracy\Debugger::barDump($result);
+            if ($result->fetch()) {
                 $this->template->kings[$kingPeriod] = $result;
             }
         }
