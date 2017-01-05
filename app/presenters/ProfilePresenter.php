@@ -35,6 +35,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $this->template->member = $this->database->table('members_member')->get($id_member);
         $this->template->board = $this->database->table('members_board_pos');
         $this->template->rank = $this->database->table('members_rank');
+        $this->template->carrot32 = $this->imageStorage->getCarrot(32);
     }
 
     public function beforeRender() {
