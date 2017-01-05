@@ -11,7 +11,7 @@
         <tbody>
         {foreach $points_month[$months[0]] as $member}
         <tr>
-            <td><img src="{$member->id_member|getimage}" class="img" alt="Profile photo" width="40">
+            <td><a n:href="Profile:show $member->id_member"><img src="{$member->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
                 {$member->name} {$member->surname}</td>
             <td><h4><a n:href="Activity:?id_member={$member->id_member}&month={$months[0]}">{$member->total}</a></h4></td>
         </tr>
@@ -31,7 +31,7 @@
         <tbody>
         {foreach $points_month[$months[1]] as $member}
         <tr>
-            <td><img src="{$member->id_member|getimage}" class="img" alt="Profile photo" width="40">
+            <td><a n:href="Profile:show $member->id_member"><img src="{$member->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
                 {$member->name} {$member->surname}</td>
             <td><h4><a n:href="Activity:?id_member={$member->id_member}&month={$months[1]}">{$member->total}</a></h4></td>
         </tr>
@@ -54,7 +54,7 @@
         {foreach $points as $point}
         {breakIf $i > 9 && $previousSum > $point->sum}
         <tr n:class="$i == 0 ? warning, $i == 1 ? info, $i == 2 ? active">
-            <td><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40">
+            <td><a n:href="Profile:show $member->id_member"><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
                 {$point->name} {$point->surname}</td>
             <td><h4><a n:href="Activity:?id_member={$point->id_member}">{$point->sum}</a></h4></td>
         </tr>
