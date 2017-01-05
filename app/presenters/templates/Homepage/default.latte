@@ -45,7 +45,8 @@
                         <th data-field="gender" data-sortable="true">Pohlaví</th>
                         <th data-field="tshirt" data-sortable="true" data-align="center">Tričko</th>
                         <th data-field="angel" data-sortable="true">Angel</th>
-                        <th data-field="fb" data-sortable="true" data-align="center">FB</th>    
+                        <th data-field="fb" data-align="center">FB</th>
+                        <th data-field="carrots" data-align="center">Mrkve</th>      
                     </tr>
                 </thead>
                 <tbody>
@@ -76,7 +77,9 @@
                             </a>
                            {/if}
                         </td>
-
+                        <td><a n:href="Activity:?id_member={$member->id_member}">
+                            <img src={$carrot32} style="width:24px;height:24px;"></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

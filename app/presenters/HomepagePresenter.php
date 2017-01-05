@@ -38,8 +38,6 @@ class HomepagePresenter extends BaseSecuredPresenter
     public function renderDefault()
     {
         $this->template->members = $this->database->table('members_member')->order('name ASC');
-
-        
-
+        $this->template->carrot32 = $this->imageStorage->getCarrot(32);
     }
 }
