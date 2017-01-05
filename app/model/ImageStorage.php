@@ -9,11 +9,13 @@ class ImageStorage extends Nette\Object
 {
     public $dir;
     public $www_dir;
+    public $img_dir;
 
-    public function __construct($dir)
+    public function __construct($img_dir)
     {
         $this->www_dir = WWW_DIR . "/images/profile";
-        $this->dir = $dir;
+        $this->dir = $img_dir . "/profile";
+        $this->img_dir = $img_dir;
     }
 
     private function save($file, $contents)
@@ -52,5 +54,11 @@ class ImageStorage extends Nette\Object
         }
 
         return $this->dir . '/' . $member->image;
+    }
+
+    public function getCarrot($size) {
+        $image = "carrot-" . $size . ".png";
+
+        return $this->img_dir . '/' . $image;
     }
 }
