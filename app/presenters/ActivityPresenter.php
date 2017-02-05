@@ -55,7 +55,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
 
     public function renderDefault() {
         $this->template->members = $this->database->table('members_member');
-        $this->template->points = $this->database->table('members_points')->order('id_points DESC');
+        $this->template->points = $this->database->table('members_points')->where('NOT Approved', false)->order('id_points DESC');
 
 
         $filterId = isset($_GET['id_member']) ? $_GET['id_member'] : null;
@@ -141,16 +141,16 @@ class ActivityPresenter extends BaseSecuredPresenter {
     protected function createComponentPointsForm()
     {
         $user = $this->getUser();
-        
-        if (!($user->isInRole('admin'))) {
-            return;
-        }
-
         $members = array();
-
-        foreach ($this->db_members as $id => $row) {
-            $members[$id] = $row['name'] . " " . $row['surname'];
-        }
+		
+        if (!($user->isInRole('admin'))) {
+			$row = $this->database->table('members_member')->where('email', $user->email)->fetch();
+			$members[$row->id] = $row['name'] . " " . $row['surname'];
+        }else{
+			foreach ($this->db_members as $id => $row) {
+                $members[$id] = $row['name'] . " " . $row['surname'];
+            }
+		}
 
         $form = new Form;
 
@@ -196,6 +196,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
         } else {
             $id_batch = $last_row->id_batch + 1;
         }
+		
 
         foreach ($values as $i => $value) {
             if (is_numeric($i) && $value != NULL) {
@@ -206,12 +207,17 @@ class ActivityPresenter extends BaseSecuredPresenter {
                     'points' => $values['points'],
                     'name' => $values['name'],
                     'description' => $values['description'],
-                    'datetime' => $values['datetime']
+                    'datetime' => $values['datetime'],
+					'Approved' => $user->isInRole('admin')
                     ));
             }
 
         }
-        $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
+		if($user->isInRole('admin')){
+            $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
+		}else{
+			$this->flashMessage("Žádost o mrkvičky odeslána ke schválení. Keep it up! HR opět válí!")
+		}
         $this->redirect('Activity:default');
     }
 
