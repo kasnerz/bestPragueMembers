@@ -70,6 +70,24 @@ class ActivityPresenter extends BaseSecuredPresenter {
         
         $this->template->db_members = $this->db_members;
     }
+	
+	public function renderApprovals() {
+        $this->template->members = $this->database->table('members_member');
+        $this->template->points = $this->database->table('members_points')->where('Approved', false)->order('id_points DESC');
+
+
+        $filterId = isset($_GET['id_member']) ? $_GET['id_member'] : null;
+        if($filterId) {
+            $this->template->members = $this->template->members->where("id_member", $filterId);
+            $this->template->points = $this->template->points->where("id_member", $filterId);
+        }
+        $filterMonth = isset($_GET['month']) ? $_GET['month'] : null;
+        if($filterMonth) {
+            $this->template->points = $this->template->points->where("datetime LIKE ?", str_replace('/','-',$filterMonth).'%');
+        }
+        
+        $this->template->db_members = $this->db_members;
+    }
 
     public function beforeRender() {
         $this->template->addFilter('getimage', function ($member) {
@@ -224,6 +242,15 @@ class ActivityPresenter extends BaseSecuredPresenter {
     public function handleDelete($id) {
         $this->database->table('members_points')->get($id)->delete();
         $this->flashMessage('Aktivita smazána.');
+        $this->redirect('Activity:');
+        // $this->redirect('Homepage:');
+    }
+	
+	public function handleApprove($id) {
+        $row = $this->database->table('members_points')->get($id);
+		$data['Approved'] = true;
+		$row->update($data);
+		$this->flashMessage('Aktivita schválena.');
         $this->redirect('Activity:');
         // $this->redirect('Homepage:');
     }
