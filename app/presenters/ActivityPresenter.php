@@ -55,7 +55,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
 
     public function renderDefault() {
         $this->template->members = $this->database->table('members_member');
-        $this->template->points = $this->database->table('members_points')->where('NOT Approved', false)->order('id_points DESC');
+        $this->template->points = $this->database->table('members_points')->where('NOT approved', false)->order('id_points DESC');
 
 
         $filterId = isset($_GET['id_member']) ? $_GET['id_member'] : null;
@@ -73,7 +73,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
 	
 	public function renderApprovals() {
         $this->template->members = $this->database->table('members_member');
-        $this->template->points = $this->database->table('members_points')->where('Approved', false)->order('id_points DESC');
+        $this->template->points = $this->database->table('members_points')->where('approved', false)->order('id_points DESC');
 
 
         $filterId = isset($_GET['id_member']) ? $_GET['id_member'] : null;
@@ -160,19 +160,10 @@ class ActivityPresenter extends BaseSecuredPresenter {
     {
         $user = $this->getUser();
         $members = array();
-		
-        if (!($user->isInRole('admin'))) {
-			$row = $this->database->table('members_member')->where('email', $user->email)->fetch();
-			$members[$row->id] = $row['name'] . " " . $row['surname'];
-        }else{
-			foreach ($this->db_members as $id => $row) {
-                $members[$id] = $row['name'] . " " . $row['surname'];
-            }
-		}
+
 
         $form = new Form;
 
-        $form->addSelect('id_member', 'Člen*', $members);
         $form->addSelect('id_activity', 'Aktivita*', $this->activities);
         $form->addText('name', 'Název');
         $form->addTextArea('description', 'Popis');
@@ -198,13 +189,13 @@ class ActivityPresenter extends BaseSecuredPresenter {
 
     public function pointsFormSucceeded($form, $values)
     {   
-        
-        $values[$values['id_member']] = TRUE;
+        $values[$this->user->getIdentity()->getId()] = TRUE;
         $this->pointsFormBatchSucceeded($form, $values);
     }
 
     public function pointsFormBatchSucceeded($form, $values)
     {   
+        $user = $this->getUser();
         $this->makeStringsNull($values);
 
         $last_row = $this->database->table('members_points')->order('id_batch DESC')->fetch();
@@ -226,7 +217,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
                     'name' => $values['name'],
                     'description' => $values['description'],
                     'datetime' => $values['datetime'],
-					'Approved' => $user->isInRole('admin')
+					'approved' => $user->isInRole('admin')
                     ));
             }
 
@@ -234,7 +225,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
 		if($user->isInRole('admin')){
             $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
 		}else{
-			$this->flashMessage("Žádost o mrkvičky odeslána ke schválení. Keep it up! HR opět válí!")
+			$this->flashMessage("Žádost o mrkvičky odeslána ke schválení. Keep it up!");
 		}
         $this->redirect('Activity:default');
     }
@@ -245,13 +236,12 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->redirect('Activity:');
         // $this->redirect('Homepage:');
     }
-	
-	public function handleApprove($id) {
-        $row = $this->database->table('members_points')->get($id);
-		$data['Approved'] = true;
-		$row->update($data);
-		$this->flashMessage('Aktivita schválena.');
-        $this->redirect('Activity:');
+
+    public function handleApprove($id) {
+        $this->database->table('members_points')->get($id)->update(array('approved' => 1));
+        $this->flashMessage('Aktivita schválena.');
+        $this->redirect('Activity:approvals');
         // $this->redirect('Homepage:');
     }
+	
 }

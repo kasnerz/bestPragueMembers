@@ -54,7 +54,7 @@
         {foreach $points as $point}
         {breakIf $i > 9 && $previousSum > $point->sum}
         <tr n:class="$i == 0 ? warning, $i == 1 ? info, $i == 2 ? active">
-            <td><a n:href="Profile:show $member->id_member"><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
+            <td><a n:href="Profile:show $point->id_member"><img src="{$point->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
                 {$point->name} {$point->surname}</td>
             <td><h4><a n:href="Activity:?id_member={$point->id_member}">{$point->sum}</a></h4></td>
         </tr>
