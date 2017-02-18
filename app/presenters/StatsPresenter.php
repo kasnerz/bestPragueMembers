@@ -60,10 +60,11 @@ FROM members_member member
 LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs('member_name');
         $this->template->angel_tree = Nette\Utils\Json::encode($angel_tree);
 
-        $this->template->points = $this->database->query('SELECT members_member.id_member, members_member.name, members_member.surname, SUM( COALESCE( members_points.points, members_activities.points ) ) AS sum
+        $this->template->points = $this->database->query('SELECT members_member.id_member, members_member.name, members_member.surname, members_points.approved AS approved, SUM( COALESCE( members_points.points, members_activities.points ) ) AS sum
                                                             FROM members_points
                                                             JOIN members_activities USING (id_activity)
                                                             JOIN members_member USING (id_member)
+                                                            WHERE approved = 1
                                                             GROUP BY id_member
                                                             ORDER BY sum DESC');
 
@@ -75,11 +76,12 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
             for($i=0; $i<2; $i++) {
                 $month = $months[$i];
 
-            $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,
+            $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,members_points.approved as approved,
     SUM(COALESCE(members_points.points,members_activities.points,0)) as total,
     DATE_FORMAT(members_points.datetime,'%Y/%m') as period FROM `members_points` 
     INNER JOIN `members_member` USING (id_member)
     LEFT JOIN `members_activities` USING (id_activity)
+    WHERE approved = 1
     GROUP BY members_member.id_member,period
     HAVING period='$month'
     ORDER BY total DESC,members_member.joined DESC");
@@ -91,11 +93,12 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
         $this->template->kings = [];
         for($i=1;$i<12;$i++) {
             $kingPeriod = date('Y/m', strtotime("-$i month"));
-            $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,
+            $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,members_points.approved as approved,
     SUM(COALESCE(members_points.points,members_activities.points,0)) as total,
     DATE_FORMAT(members_points.datetime,'%Y/%m') as period FROM `members_points` 
     INNER JOIN `members_member` USING (id_member)
     LEFT JOIN `members_activities` USING (id_activity)
+    WHERE approved = 1
     GROUP BY members_member.id_member,period
     HAVING period='$kingPeriod'
     ORDER BY total DESC,members_member.joined DESC
