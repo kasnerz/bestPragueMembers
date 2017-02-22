@@ -1,0 +1,20 @@
+﻿{block content}
+
+<div class="pane">
+
+<div class="board">
+ <div n:class="panel, panel-default">
+  <div class="panel-heading"><h3 class="panel-title">BESTí email</h3></div>
+  <div class="panel-body">
+  {if $created}
+	<p>Tvůj BESTí email je založený. Přihlásit se můžeš <a href="https://best-vps.bestprague.cz"><b>tady</b></a>.</p>
+  {else}
+	<p>Tvůj BESTí email ještě není založený. Pro vytvoření prosím vyplň následující údaje.</p>
+  {/if}
+  {control postForm}
+  </div>
+ </div>
+ </div>
+</div>
+
+{/block}

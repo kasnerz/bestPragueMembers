@@ -5,3 +5,9 @@ vendor/*
 !.htaccess
 !web.config
 app/config/config.local.neon
+/.vs/bestPragueMembers/v14/.suo
+/bestPragueMembers.sln
+/bestPragueMembers.phpproj
+/.gitattributes
+/Properties/PublishProfiles
+/bestPragueMembers.phpproj.user
