@@ -1,0 +1,55 @@
+{block head}
+
+{/block}
+
+
+{block content}
+
+<div class="pane">
+  <div class="board">
+  <div n:class="panel, panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Upravit nominace do voleb</h3></div>
+  <div class="panel-body">
+       {form electionsForm}
+      <ul class="error" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+     </ul>
+      <table class="table table-responsive">
+      <tr class="required">
+          <th>{label name /}</th>
+          <td>{input name class => form-control}</td>
+      </tr>
+      <tr class="required">
+          <th>{label from /}</th>
+          <td>{input from class => form-control}</td>
+      </tr>
+      <tr class="required">
+          <th>{label to /}</th>
+          <td>{input to class => form-control}</td>
+      </tr>
+      </table>
+       
+      <table class="table table-striped table-sm table-responsive" style="text-align:left">
+        <tbody>
+        <tr>
+          <strong>Pozice</strong>
+        </tr>
+        <tr n:foreach="$positions as $position" style="margin-bottom:-10px">
+          <td>{input $position->id_board_pos }</td>
+          <td>{$position->name}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      {input submit}
+
+      {/form}
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+{/block}
+
+

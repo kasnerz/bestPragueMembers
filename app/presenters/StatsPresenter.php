@@ -103,8 +103,7 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
     HAVING period='$kingPeriod'
     ORDER BY total DESC,members_member.joined DESC
     LIMIT 3");
-            \Tracy\Debugger::enable();
-            \Tracy\Debugger::barDump($result);
+
             if ($result->fetch()) {
                 $this->template->kings[$kingPeriod] = $result;
             }

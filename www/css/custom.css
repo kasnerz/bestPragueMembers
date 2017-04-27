@@ -42,6 +42,12 @@
   padding-right: 20px;
 }
 
+.nominations {
+    margin: auto;
+    width: 80%;
+    text-align: center;
+}
+
 .pane {
     margin-left: 25px;
     margin-right: 25px;

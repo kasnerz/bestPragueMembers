@@ -1,0 +1,55 @@
+{block head}
+
+{/block}
+
+
+{block content}
+
+<div class="pane">
+  <a n:href="Nominations:">
+        <button type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zpět
+        </button>
+    </a>
+  <div class="nominations">
+    {if empty($nominations->fetchAll())}
+      Ve volbách <strong>{$election->name}</strong> jsi nebyl(a) nominován(a) na žádnou pozici.<br/>Ale nesmutni a dej si mrkev!<br/><br/>
+
+      <img src="http://bleskove.cz/gallery/photos/14772398681157/thumbnail_14772398681157.jpg"></img>
+    {else}
+    <h3>Ve volbách <strong>{$election->name}</strong> jsi byl(a) nominován(a) na:</h3>
+    <table id="table" data-toggle="table"
+                    data-search="true"
+                    data-show-refresh="true"
+                    data-show-toggle="true"
+                    data-show-columns="true"
+                    data-show-export="true"
+                    data-pagination="true"
+                    data-sortable="true"
+                    data-row-style="rowStyle"
+                    data-buttons-align="right"
+                    data-search-align="right"
+                    data-toolbar="#toolbar"
+                    data-toolbar-align="right"
+                    >
+
+                    <thead>
+                        <tr>
+                            <th data-field="board_pos" data-sortable="true">Pozice</th>
+                            <th data-field="note" data-sortable="true">Komentář</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr n:foreach="$nominations as $nomination">
+                            <td>{$nomination->ref('members_board_pos', 'id_board_pos')->name}</td>
+                            <td>{$nomination->note}</td>
+                        </tr>
+                    </tbody>
+                </table>
+      {/if}
+ </div>
+</div>
+
+{/block}
+
+

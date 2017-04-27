@@ -1,0 +1,101 @@
+{block head}
+
+{/block}
+
+
+{block content}
+
+<div class="pane">
+  <h2>{$election->name}</h2>
+   <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a data-toggle="tab" href="#nominationcounts">Počty nominací</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#nominationlist">Seznam nominací</a></li>
+    </ul>
+
+  <div class="nominations">
+  <div class="tab-content">
+    <div id="nominationcounts" class="tab-pane active">
+        <table id="table" data-toggle="table"
+                    data-search="true"
+                    data-show-refresh="true"
+                    data-show-toggle="true"
+                    data-show-columns="true"
+                    data-show-export="true"
+                    data-sortable="true"
+                    data-buttons-align="right"
+                    data-search-align="right"
+                    data-toolbar="#toolbar"
+                    data-toolbar-align="right"
+                    >
+                    <thead>
+                        <tr>
+                            <th data-field="name" data-sortable="true" data-sorter="nameSorter">Jméno</th>
+                              <th n:foreach="$positions as $pos" data-sortable="true">{$pos->ref('members_board_pos','id_board_pos')->name}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr n:foreach="$members as $member">
+                            <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
+                              <td n:foreach="$positions as $pos"> {$member->related('members_nominations.id_nominee')
+                                    ->where('id_election =' . $id_election)
+                                    ->where('id_board_pos =' . $pos->id_board_pos)
+                                    ->count("*")}</td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div id="nominationlist" class="tab-pane">
+             <table id="table" data-toggle="table"
+                    data-search="true"
+                    data-show-refresh="true"
+                    data-show-toggle="true"
+                    data-show-columns="true"
+                    data-show-export="true"
+                    data-pagination="true"
+                    data-sortable="true"
+                    data-row-style="rowStyle"
+                    data-buttons-align="right"
+                    data-search-align="right"
+                    data-toolbar="#toolbar"
+                    data-toolbar-align="right"
+                    >
+
+                    <thead>
+                        <tr>
+                            <th data-field="id" data-sortable="true">Id</th>
+                            <th data-field="nominee" data-sortable="true">Nominovaný</th>
+                            <th data-field="board_pos" data-sortable="true">Pozice</th>
+                            <th data-field="proposer" data-sortable="true">Od</th>
+                            <th data-field="note" data-sortable="true">Komentář</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr n:foreach="$nominations as $nomination">
+                            <td>{$nomination->id_nomination}</td>
+                            <td>{$nomination->ref('members_member', 'id_nominee')->name} {$nomination->ref('members_member', 'id_nominee')->surname}</td>
+                            <td>{$nomination->ref('members_board_pos', 'id_board_pos')->name}</td>
+                            <td>{$nomination->ref('members_member', 'id_proposer')->name} {$nomination->ref('members_member', 'id_proposer')->surname}</td>
+                            <td>{$nomination->note}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+
+              </div>
+      </div>
+</div>
+
+<script>
+    // Sorting names in bootstrap table. Names have to be extracted from links.
+    function nameSorter(a, b) {
+        var aName = a.substring(a.indexOf(">")+1, a.lastIndexOf("<")); 
+        var bName = b.substring(b.indexOf(">")+1, b.lastIndexOf("<"));
+
+        return aName.localeCompare(bName);
+    }
+
+</script>
+
+{/block}
+
+

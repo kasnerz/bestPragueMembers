@@ -1,0 +1,47 @@
+{block head}
+
+{/block}
+
+
+{block content}
+
+<div class="pane">
+  <div class="board">
+  <div n:class="panel, panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Nominace do voleb</h3></div>
+  <div class="panel-body">
+           {if empty($elections->fetchAll())}
+             V současnosti nejsou vypsány žádné volby.
+           {else}
+            {foreach $elections as $id => $election}
+                {if $iterator->counter > 1}
+                  <hr/>
+                  {/if}
+                 <h4>{$election->name}</h4>
+                <p><strong>od:</strong> {$election->from|date:'%d.%m.%Y %H:%M'} — <strong>do:</strong> {$election->to|date:'%d.%m.%Y %H:%M'}</p>
+                <!-- <p></p> -->
+                {if $election->nominations_visible}
+                <a n:href="Nominations:myself $id">
+                  <button type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Moje nominace
+                  </button>
+                </a>
+                {/if}
+                <a n:href="Nominations:new $id">
+                  <button type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Nominovat kandidáta
+                  </button>
+                </a>
+            {/foreach}
+           {/if}
+
+           
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+{/block}
+
+
