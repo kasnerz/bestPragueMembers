@@ -32,9 +32,9 @@ class NominationsPresenter extends BaseSecuredPresenter {
 
 
     public function renderDefault() {
-        $this->template->elections = $this->database->table('members_elections')->order('from ASC')
-                                         ->where("from <= " . date('Y/m/d', strtotime("now")))
-                                         ->where("to >= " . date('Y/m/d', strtotime("now")));
+        $this->template->elections = $this->database->table('members_elections')->order('from ASC');
+                                         // ->where("from <= '" . date("Y-m-d G:i") . "'")
+                                         // ->where("to >= '" . date("Y-m-d G:i") . "'");
         $this->template->db_members = $this->db_members;
     }
 
@@ -48,7 +48,8 @@ class NominationsPresenter extends BaseSecuredPresenter {
         $this->template->election = $this->database->table('members_elections')->get($id);
         $this->template->members = $this->db_members;
         $this->template->positions= $this->database->table('members_nomination_pos')->where('id_election = ' . $id);
-        $this->template->nominations= $this->database->table('members_nominations')->where('id_election = ' . $id);
+        $this->template->nominations = $this->database->table('members_nominations')->where('id_election = ' . $id)->where('id_nominee IS NOT NULL');
+        $this->template->nominations_bs = $this->database->table('members_nominations')->where('id_election = ' . $id)->where('id_nominee IS NULL');
     }
 
     public function renderMyself($id){
@@ -91,6 +92,13 @@ class NominationsPresenter extends BaseSecuredPresenter {
             $this['electionsForm']['from']->setDefaultValue($election->from->format('d.m.Y G:i'));
             $this['electionsForm']['to']->setDefaultValue($election->to->format('d.m.Y G:i'));
         }
+    }
+
+    public function handleDelete($id_election)
+    {
+        $this->database->table('members_elections')->get($id_election)->delete();
+        $this->flashMessage('Volby smazány.');
+        $this->redirect('Nominations:admin');
     }
 
     private function makeFormLookGood($form) {
@@ -178,9 +186,7 @@ class NominationsPresenter extends BaseSecuredPresenter {
         ->setDefaultValue(date("d.m.Y G:i"))
         ->addRule($form::PATTERN, "Datum musí být ve formátu dd.mm.rrrr hh:mm", "(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d (0|1|2)[0-9]:[0-5][0-9]");
 
-        // \Nella\Forms\DateTime\DateTimeInput::register();
-        // $form->addDateTime('from', 'Začátek nominací:', 'd.m.Y', 'G:i')->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', date("d.m.Y G:i")));
-        // $form->addDateTime('to', 'Konec nominací:', 'd.m.Y', 'G:i')->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', date("d.m.Y G:i")));
+        $form->addCheckbox("nominations_visible", " Členové si mohou zobrazit vlastní nominace (zapnout po volbách)");
 
         $positions_select = $this->database->table('members_board_pos');
         $positions = array();
@@ -250,7 +256,8 @@ class NominationsPresenter extends BaseSecuredPresenter {
             $election->update(array(
                 'name' => $values['name'],
                 'from' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['from']),
-                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['to'])
+                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['to']),
+                'nominations_visible' => $values['nominations_visible']
             ));
 
             $election->related('members_nomination_pos.id_election')->delete();
@@ -270,7 +277,8 @@ class NominationsPresenter extends BaseSecuredPresenter {
             $row = $this->database->table('members_elections')->insert(array(
                 'name' => $values['name'],
                 'from' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['from']),
-                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['to'])
+                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['to']),
+                'nominations_visible' => $values['nominations_visible']
                 ));
 
             $id_election = $row->id_election;

@@ -18,8 +18,8 @@
                   <hr/>
                   {/if}
                  <h4>{$election->name}</h4>
-                <p><strong>od:</strong> {$election->from|date:'%d.%m.%Y %H:%M'} — <strong>do:</strong> {$election->to|date:'%d.%m.%Y %H:%M'}</p>
-                <!-- <p></p> -->
+                <p><strong>od:</strong> {$election->from|date:'%d.%m.%Y %H:%M'}</p>
+                <p> <strong>do:</strong> {$election->to|date:'%d.%m.%Y %H:%M'}</p>
                 {if $election->nominations_visible}
                 <a n:href="Nominations:myself $id">
                   <button type="button" class="btn btn-default btn-sm">
@@ -27,11 +27,14 @@
                   </button>
                 </a>
                 {/if}
+                {if $election->from <= \Nette\Utils\DateTime::createFromFormat('Y-m-d H:i', date("Y-m-d H:i")) && 
+                $election->to >= \Nette\Utils\DateTime::createFromFormat('Y-m-d H:i', date("Y-m-d H:i"))}
                 <a n:href="Nominations:new $id">
                   <button type="button" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Nominovat kandidáta
                   </button>
                 </a>
+                {/if}
             {/foreach}
            {/if}
 

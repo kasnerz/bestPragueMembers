@@ -37,9 +37,20 @@
                         <tr n:foreach="$members as $member">
                             <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                               <td n:foreach="$positions as $pos"> {$member->related('members_nominations.id_nominee')
-                                    ->where('id_election =' . $id_election)
-                                    ->where('id_board_pos =' . $pos->id_board_pos)
+                                    ->where('id_election =', $id_election)
+                                    ->where('id_board_pos =', $pos->id_board_pos)
                                     ->count("*")}</td>
+                        </tr>
+                        <tr n:foreach="$nominations_bs as $nomination" class='warning'>
+                            <td>{$nomination->name}</td>
+                            {foreach $positions as $pos}
+                            <td>
+                                {$nominations_bs
+                                  ->where('name LIKE ', $nomination->name)
+                                  ->where('id_board_pos = ', $pos->id_board_pos)
+                                  ->count("*")}
+                            </td>
+                            {/foreach}
                         </tr>
                     </tbody>
                 </table>
@@ -73,6 +84,13 @@
                         <tr n:foreach="$nominations as $nomination">
                             <td>{$nomination->id_nomination}</td>
                             <td>{$nomination->ref('members_member', 'id_nominee')->name} {$nomination->ref('members_member', 'id_nominee')->surname}</td>
+                            <td>{$nomination->ref('members_board_pos', 'id_board_pos')->name}</td>
+                            <td>{$nomination->ref('members_member', 'id_proposer')->name} {$nomination->ref('members_member', 'id_proposer')->surname}</td>
+                            <td>{$nomination->note}</td>
+                        </tr>
+                        <tr n:foreach="$nominations_bs as $nomination" class='warning'>
+                            <td>{$nomination->id_nomination}</td>
+                            <td>{$nomination->name}</td>
                             <td>{$nomination->ref('members_board_pos', 'id_board_pos')->name}</td>
                             <td>{$nomination->ref('members_member', 'id_proposer')->name} {$nomination->ref('members_member', 'id_proposer')->surname}</td>
                             <td>{$nomination->note}</td>

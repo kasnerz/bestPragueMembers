@@ -27,16 +27,29 @@
 
                 <div class="col-md-6">{$election->name}</div>
                   <div class="col-md-6">
+                                 <a data-confirm="modal"
+                  data-confirm-title="Potvrď"
+                  data-confirm-text="Opravdu chceš smazat tyto volby? Smazáním voleb budou ztraceny nominace. Vyexportuj je proto nejdřív třeba do Excelu."
+                  data-confirm-ok-class="btn-danger"
+                  data-confirm-ok-text="Smazat"
+                  data-confirm-cancel-class="btn-success"
+                  data-confirm-cancel-text="Zrušit"
+                  n:href="delete! $election->id_election">
+                  <button type="button" class="btn btn-default btn-sm" style="float: right">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+                  </button>
+              </a>
+                              <a n:href="Nominations:edit $election->id_election">
+                  <button type="button" class="btn btn-default btn-sm" style="float: right">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                  </button>
+                </a>
                   <a n:href="Nominations:overview $election->id_election">
-                  <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span> Přehled
+                  <button type="button" class="btn btn-default btn-sm" style="float: right">
+                    <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
                   </button>
                 </a>
-                <a n:href="Nominations:edit $election->id_election">
-                  <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Upravit
-                  </button>
-                </a>
+
 
                </div>
           </div> 
