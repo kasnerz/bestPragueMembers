@@ -45,6 +45,7 @@ class NominationsPresenter extends BaseSecuredPresenter {
 
     public function renderOverview($id){
         $this->template->id_election = $id;
+        $this->template->database = $this->database;
         $this->template->election = $this->database->table('members_elections')->get($id);
         $this->template->members = $this->db_members;
         $this->template->positions= $this->database->table('members_nomination_pos')->where('id_election = ' . $id);

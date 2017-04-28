@@ -45,10 +45,11 @@
                             <td>{$nomination->name}</td>
                             {foreach $positions as $pos}
                             <td>
-                                {$nominations_bs
-                                  ->where('name LIKE ', $nomination->name)
-                                  ->where('id_board_pos = ', $pos->id_board_pos)
-                                  ->count("*")}
+                                {$database->table('members_nominations')
+                                    ->where('name = ', $nomination->name)
+                                    ->where('id_election =', $id_election)
+                                    ->where('id_board_pos =', $pos->id_board_pos)
+                                    ->count("*")}
                             </td>
                             {/foreach}
                         </tr>
