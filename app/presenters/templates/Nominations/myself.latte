@@ -4,7 +4,7 @@
 
 
 {block content}
-
+{if $election->nominations_visible}
 <div class="pane">
   <a n:href="Nominations:">
         <button type="button" class="btn btn-default btn-sm">
@@ -49,7 +49,7 @@
       {/if}
  </div>
 </div>
-
+{/if}
 {/block}
 
 

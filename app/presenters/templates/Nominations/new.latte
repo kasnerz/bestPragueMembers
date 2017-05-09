@@ -1,5 +1,6 @@
 {block content}
-
+{if $election->from <= \Nette\Utils\DateTime::createFromFormat('Y-m-d H:i', date("Y-m-d H:i")) && 
+                $election->to >= \Nette\Utils\DateTime::createFromFormat('Y-m-d H:i', date("Y-m-d H:i"))}
 <div class="pane">
     <a n:href="Nominations:default">
         <button type="button" class="btn btn-default btn-sm">
@@ -16,5 +17,5 @@
       </div>
       </div>
       </div>
-    
+{/if}
 </div>

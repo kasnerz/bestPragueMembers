@@ -4,7 +4,7 @@
 
 
 {block content}
-
+{if $user->isInRole('admin')}
 <div class="pane">
   <div class="board">
   <div n:class="panel, panel-info">
@@ -53,7 +53,7 @@
   </div>
  </div>
 </div>
-
+{/if}
 {/block}
 
 

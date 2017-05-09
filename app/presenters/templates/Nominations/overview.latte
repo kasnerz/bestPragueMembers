@@ -4,7 +4,7 @@
 
 
 {block content}
-
+{if $user->isInRole('admin')}
 <div class="pane">
   <h2>{$election->name}</h2>
    <ul class="nav nav-tabs">
@@ -114,7 +114,7 @@
     }
 
 </script>
-
+{/if}
 {/block}
 
 
