@@ -179,12 +179,12 @@ class NominationsPresenter extends BaseSecuredPresenter {
         $form->addText("from", "Začátek nominací:")
         ->setRequired("Začátek nominací je povinný údaj!")
         ->setAttribute("placeholder", "dd.mm.rrrr hh:mm")
-        ->setDefaultValue(date("d.m.Y G:i"));
+        ->setDefaultValue(date("d.m.Y H:i"));
 
         $form->addText("to", "Konec nominací:")
         ->setRequired("Konec nominací je povinný údaj!")
         ->setAttribute("placeholder", "dd.mm.rrrr hh:mm")
-        ->setDefaultValue(date("d.m.Y G:i"))
+        ->setDefaultValue(date("d.m.Y H:i"))
         ->addRule($form::PATTERN, "Datum musí být ve formátu dd.mm.rrrr hh:mm", "(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d (0|1|2)[0-9]:[0-5][0-9]");
 
         $form->addCheckbox("nominations_visible", " Členové si mohou zobrazit vlastní nominace (zapnout po volbách)");
@@ -256,8 +256,8 @@ class NominationsPresenter extends BaseSecuredPresenter {
             $election = $this->database->table('members_elections')->get($id_election);
             $election->update(array(
                 'name' => $values['name'],
-                'from' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['from']),
-                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['to']),
+                'from' => \Nette\Utils\DateTime::createFromFormat('d.m.Y H:i', $values['from']),
+                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y H:i', $values['to']),
                 'nominations_visible' => $values['nominations_visible']
             ));
 
@@ -277,8 +277,8 @@ class NominationsPresenter extends BaseSecuredPresenter {
         } else {
             $row = $this->database->table('members_elections')->insert(array(
                 'name' => $values['name'],
-                'from' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['from']),
-                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y G:i', $values['to']),
+                'from' => \Nette\Utils\DateTime::createFromFormat('d.m.Y H:i', $values['from']),
+                'to' => \Nette\Utils\DateTime::createFromFormat('d.m.Y H:i', $values['to']),
                 'nominations_visible' => $values['nominations_visible']
                 ));
 
