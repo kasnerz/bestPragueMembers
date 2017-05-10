@@ -147,8 +147,8 @@ class NominationsPresenter extends BaseSecuredPresenter {
         }
         $form->addSelect('id_board_pos', 'Pozice*:', $positions);
 
-        $form->addSelect('id_member', 'Člen*:', $members);
-        $form->addText('member_name', 'Jméno člena:')->setOption('description', 'Vyplň pouze pokud chceš nominovat jiného člena.');
+        $form->addSelect('id_member', 'Nominovaný člen*:', $members);
+        $form->addText('member_name', 'Jméno člena:')->setOption('description', 'Vyplň pouze pokud chceš nominovat člena, který není v předchozím seznamu.');
         $form->addTextArea('note', 'Komentář:')->setOption('description', 'Nepovinný komentář, zobrazí se nominovanému.');
 
         $form->addSubmit('submit', 'Nominovat');
