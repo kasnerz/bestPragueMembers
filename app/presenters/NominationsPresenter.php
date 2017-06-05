@@ -58,6 +58,22 @@ class NominationsPresenter extends BaseSecuredPresenter {
         $this->template->id_election = $id;
         $this->template->election = $this->database->table('members_elections')->get($id);
         $this->template->nominations = $this->database->table('members_nominations')->where('id_election = ' . $id)->where('id_nominee =' . $user->getId());
+
+        $this->template->nominations_cnt = array();
+        $this->template->nominations_notes = array();
+
+        foreach ($this->template->nominations as $id => $row) {
+            $key = $row->ref('members_board_pos', 'id_board_pos')->name;
+            if (! array_key_exists($key, $this->template->nominations_cnt)) {
+                $this->template->nominations_cnt[$key] = 1;
+                $this->template->nominations_notes[$key] = array();
+            } else {
+                $this->template->nominations_cnt[$key]++;
+            }
+            if (!empty($row->note)) {
+                array_push($this->template->nominations_notes[$key], $row->note);
+            }
+        }
     }
 
     public function renderEdit($id){

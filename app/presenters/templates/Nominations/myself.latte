@@ -18,34 +18,20 @@
       <img src="http://bleskove.cz/gallery/photos/14772398681157/thumbnail_14772398681157.jpg"></img>
     {else}
     <h3>Ve volbách <strong>{$election->name}</strong> jsi byl(a) nominován(a) na:</h3>
-    <table id="table" data-toggle="table"
-                    data-search="true"
-                    data-show-refresh="true"
-                    data-show-toggle="true"
-                    data-show-columns="true"
-                    data-show-export="true"
-                    data-pagination="true"
-                    data-sortable="true"
-                    data-row-style="rowStyle"
-                    data-buttons-align="right"
-                    data-search-align="right"
-                    data-toolbar="#toolbar"
-                    data-toolbar-align="right"
-                    >
 
-                    <thead>
-                        <tr>
-                            <th data-field="board_pos" data-sortable="true">Pozice</th>
-                            <th data-field="note" data-sortable="true">Komentář</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr n:foreach="$nominations as $nomination">
-                            <td>{$nomination->ref('members_board_pos', 'id_board_pos')->name}</td>
-                            <td>{$nomination->note}</td>
-                        </tr>
-                    </tbody>
-                </table>
+     {foreach $nominations_cnt as $pos => $cnt}
+     <hr/>
+       <h4>{$pos}: {$cnt}x</h4>
+         <p>
+         {foreach $nominations_notes[$pos] as $id => $note}
+            {$note} <br/>
+         {/foreach}
+         </p>
+
+    {/foreach}
+    <hr/>
+
+
       {/if}
  </div>
 </div>
