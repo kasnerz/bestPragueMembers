@@ -42,9 +42,8 @@
                         <th data-field="telephone" data-sortable="true" data-align="right">Telefon</th>
                         <th data-field="active" data-sortable="true" data-align="center">Aktivní</th>
                         <th data-field="position" data-sortable="true">Pozice</th>
-                        <th data-field="joined" data-sortable="true">V BESTu od</th>
-                        <th data-field="gender" data-sortable="true">Pohlaví</th>
-                        <th data-field="tshirt" data-sortable="true" data-align="center">Tričko</th>
+                        <th data-field="joined" data-sortable="true" data-align="center">V BESTu od</th>
+                        <th data-field="gender" data-sortable="true" data-align="center">Pohlaví</th>
                         <th data-field="faculty" data-sortable="true" data-align="center">Fakulta</th>
                         <th data-field="angel" data-sortable="true">Angel</th>
                         <th data-field="fb" data-align="center">FB</th>
@@ -71,7 +70,6 @@
                         <td>{$member->rank->name}</td>
                         <td>{$member->joined|date:'%Y/%m'}</td>
                         <td>{$member->gender}</td>
-                        <td>{$member->tshirt}</td>
                         <td>{$member->faculty}</td>
                         <td>{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
                         <td>{if "$member->fb" != ""} 
