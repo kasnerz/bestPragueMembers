@@ -77,10 +77,11 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $faculties = array(
          '' => '-',
          'FIT' => "FIT",
+         'FEL' => "FEL",
          'FA' => "FA",
-         'FsV'=> "FsV",
+         'FSv'=> "FSv",
          'FS' => "FS",
-         'MUVS' => "MUVS",
+         'MÚVS' => "MÚVS",
          'FJFI' => "FJFI",
          'FBMI' => "FBMI",
          'VŠCHT' => "VŠCHT"
