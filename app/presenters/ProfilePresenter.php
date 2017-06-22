@@ -81,6 +81,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
          'FA' => "FA",
          'FSv'=> "FSv",
          'FS' => "FS",
+         'FD' => "FD",
          'MÚVS' => "MÚVS",
          'FJFI' => "FJFI",
          'FBMI' => "FBMI",
