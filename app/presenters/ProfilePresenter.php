@@ -31,12 +31,12 @@ class ProfilePresenter extends BaseSecuredPresenter {
     }
 
     public function renderShow($id_member){
-        $this->template->members = $this->database->table('members_member');
-        $this->template->member = $this->database->table('members_member')->get($id_member);
-        $this->template->board = $this->database->table('members_board_pos');
-        $this->template->rank = $this->database->table('members_rank');
-        $this->template->carrot32 = $this->imageStorage->getCarrot(32);
-    }
+    $this->template->members = $this->database->table('members_member');
+    $this->template->member = $this->database->table('members_member')->get($id_member);
+    $this->template->board = $this->database->table('members_board_pos');
+    $this->template->rank = $this->database->table('members_rank');
+    $this->template->carrot32 = $this->imageStorage->getCarrot(32);
+}
 
     public function beforeRender() {
         $this->template->addFilter('getimage', function ($member) {
@@ -74,6 +74,18 @@ class ProfilePresenter extends BaseSecuredPresenter {
             'guest' => 'guest'
         );
 
+        $faculties = array(
+         '' => '-',
+         'FIT' => "FIT",
+         'FA' => "FA",
+         'FsV'=> "FsV",
+         'FS' => "FS",
+         'MUVS' => "MUVS",
+         'FJFI' => "FJFI",
+         'FBMI' => "FBMI",
+         'VŠCHT' => "VŠCHT"
+        );
+
         $form = new Form;
 
         $form->addGroup('Základní informace');
@@ -99,7 +111,6 @@ class ProfilePresenter extends BaseSecuredPresenter {
         foreach ($db_rank as $id => $row) {
             $rank[$id] = $row['name'];
         }
-
 
         $form->addRadioList('gender', 'Pohlaví*', $sex)->setRequired('Hermafrodity neberem.');
 
@@ -128,6 +139,9 @@ class ProfilePresenter extends BaseSecuredPresenter {
         });
         $form->addText('nickname', 'Přezdívka');
         $form->addText('tshirt', 'Tričko');
+
+        $form->addSelect("faculty", "Fakulta", $faculties);
+
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
 
         if ($id_member) { // user already exists
@@ -136,12 +150,9 @@ class ProfilePresenter extends BaseSecuredPresenter {
             ->addCondition(Form::FILLED)->addRule(Form::IMAGE, 'Obrázek musí být JPEG, PNG nebo GIF.')
             ->addRule(Form::MAX_FILE_SIZE, 'Maximální velikost souboru je 128 kB.', 128 * 1024);
         }
-       
-
 
         $form->addSubmit('submit', 'Přidat');
         $form->onSuccess[] = array($this, 'postFormSucceeded');
-
 
         // All of this is only additional code that makes Nette form look good in Bootstrap
         // setup form rendering
