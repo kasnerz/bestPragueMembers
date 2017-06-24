@@ -23,13 +23,13 @@
         <div class="panel-body">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-9 col-xs-12">
-                        <h2>{$member->name} {$member->surname} {if $member->nickname}({$member->nickname}){/if}</h2>
-                    </div>
-                    <div class="col-md-3 hidden-xs">
-                        {if $member->image}
-                            <img style="float: right; margin-right: 40px" src="{$member|getimage}" class="img-rounded" alt="Profile photo" width="50">
-                        {/if}
+                    <div>
+                        <h2>
+                            {if $member->image}
+                                <img style="" src="{$member|getimage}" class="img-circle" alt="Profile photo" width="50">
+                            {/if}
+                            {$member->name} {$member->surname} {if $member->nickname}({$member->nickname}){/if}
+                        </h2>
                     </div>
                 </div>
                 <div class="row">
