@@ -35,19 +35,19 @@
                 >
                 <thead>
                     <tr>
-                        <th data-field="image"></th>
+                        <th data-field="image" class="hidden-xs"></th>
                         <th data-field="name" data-sortable="true" data-sorter="nameSorter">Jméno</th>
                         <th data-field="email" data-sortable="true">Email</th>
-                        <th data-field="wg" data-sortable="true" data-align="center">WG</th>
+                        <th data-field="wg" data-sortable="true" data-align="center" class="hidden-xs">WG</th>
                         <th data-field="telephone" data-sortable="true" data-align="right">Telefon</th>
                         <th data-field="active" data-sortable="true" data-align="center">Aktivní</th>
-                        <th data-field="position" data-sortable="true">Pozice</th>
-                        <th data-field="joined" data-sortable="true" data-align="center">V BESTu od</th>
-                        <th data-field="gender" data-sortable="true" data-align="center">Pohlaví</th>
-                        <th data-field="faculty" data-sortable="true" data-align="center">Fakulta</th>
-                        <th data-field="angel" data-sortable="true">Angel</th>
-                        <th data-field="fb" data-align="center">FB</th>
-                        <th data-field="carrots" data-align="center">Mrkve</th>      
+                        <th data-field="position" data-sortable="true" class="hidden-xs">Pozice</th>
+                        <th data-field="joined" data-sortable="true" data-align="center" class="hidden-xs">V BESTu od</th>
+                        <th data-field="gender" data-sortable="true" data-align="center" class="hidden-xs">Pohlaví</th>
+                        <th data-field="faculty" data-sortable="true" data-align="center" class="hidden-xs">Fakulta</th>
+                        <th data-field="angel" data-sortable="true" class="hidden-xs">Angel</th>
+                        <th data-field="fb" data-align="center" class="hidden-xs">FB</th>
+                        <th data-field="carrots" data-align="center" class="hidden-xs">Mrkve</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,36 +58,32 @@
                                                                 $member->rank->name == 'Ex-member' ? active" >
 
 
-                        <td>
-                            
-                            <img src={$member|getimage} style="width:24px;height:24px;">
-                        </td>
+                        <td class="hidden-xs"><img src={$member|getimage} style="width:24px;height:24px;"></td>
                         <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                         <td>{$member->email}</td>
-                        <td>{$member->wg}</td>
+                        <td class="hidden-xs">{$member->wg}</td>
                         <td>{$member->telephone}</td>
                         <td>{$member->rank->active ? ano : ne}</td>
-                        <td>{$member->rank->name}</td>
-                        <td>{$member->joined|date:'%Y/%m'}</td>
-                        <td>{$member->gender}</td>
-                        <td>{$member->faculty}</td>
-                        <td>{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
-                        <td>{if "$member->fb" != ""} 
+                        <td class="hidden-xs">{$member->rank->name}</td>
+                        <td class="hidden-xs">{$member->joined|date:'%Y/%m'}</td>
+                        <td class="hidden-xs">{$member->gender}</td>
+                        <td class="hidden-xs">{$member->faculty}</td>
+                        <td class="hidden-xs">{if $member->id_angel}<a n:href="Profile:show $member->id_angel">{$members->get($member->id_angel)->name} {$members->get($member->id_angel)->surname}</a>{else}-{/if}</td>
+                        <td class="hidden-xs">{if "$member->fb" != ""}
                             <a class="btn btn-social-icon btn-facebook btn-xs" target="_blank" href={$member->fb}>
                                 <span class="fa fa-facebook"></span>
                             </a>
                            {/if}
                         </td>
-                        <td><a n:href="Activity:?id_member={$member->id_member}">
+                        <td class="hidden-xs"><a n:href="Activity:?id_member={$member->id_member}">
                             <img src={$carrot32} style="width:24px;height:24px;"></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-  </div>
 </div>
+
+
 
 <script>
     var $table = $('#table'),
