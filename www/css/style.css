@@ -48,3 +48,9 @@ form .error {
 	color: #D00;
 	font-weight: bold;
 }
+
+@media (min-width: 1200px) {
+	.container{
+		max-width: 970px;
+	}
+}
