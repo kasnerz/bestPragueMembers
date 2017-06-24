@@ -62,7 +62,7 @@
                         <td><a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a></td>
                         <td>{$member->email}</td>
                         <td class="hidden-xs">{$member->wg}</td>
-                        <td>{$member->telephone}</td>
+                        <td><a href="tel: {$member->telephone}">{$member->telephone}</a></td>
                         <td>{$member->rank->active ? ano : ne}</td>
                         <td class="hidden-xs">{$member->rank->name}</td>
                         <td class="hidden-xs">{$member->joined|date:'%Y/%m'}</td>
