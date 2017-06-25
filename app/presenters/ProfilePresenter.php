@@ -33,7 +33,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
     public function renderShow($id_member){
     $this->template->members = $this->database->table('members_member');
     $this->template->member = $this->database->table('members_member')->get($id_member);
-    $this->template->board = $this->database->table('members_board_pos');
+    $this->template->hr = $this->database->table('members_board_pos')->where(array("id_member" => $this->getUser()->getId(), "id_board_pos" => 3))->fetch();
     $this->template->rank = $this->database->table('members_rank');
     $this->template->carrot32 = $this->imageStorage->getCarrot(32);
 }
@@ -240,5 +240,30 @@ class ProfilePresenter extends BaseSecuredPresenter {
             $this->flashMessage('Člen smazán.');
             $this->redirect('Homepage:');
         }
+    }
+
+    public function renderHr($id_member) {
+        $this->template->id_member = $id_member;
+        $this->template->userDisplayed = $this->database->table("members_member")->where(array("id_member" => $id_member))->fetch();
+        $this->template->records = $this->database->table("members_121")->where(array("id_member" => $id_member))->order("created")->fetchAll();
+    }
+
+    public function createComponentOne2OneForm() {
+        $form = new Form();
+
+        $form->addTextArea("note");
+        $form->addHidden("id_member");
+        $form->addSubmit("submit");
+        $form->onSuccess[] = array($this, "one2OneFormSubmitted");
+
+        return $form;
+    }
+
+    public function one2OneFormSubmitted($form) {
+        $note = $form->getValues()->note;
+        $id_member = $form->getValues()->id_member;
+
+        $this->database->table("members_121")->insert(array("id_member" => $id_member, "created" => new Nette\Utils\DateTime("now"), "note" => ($note)));
+        $this->redirect("Profile:hr", $id_member);
     }
 }

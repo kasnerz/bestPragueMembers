@@ -1,0 +1,27 @@
+{block content}
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Historie člena {$userDisplayed->name} {$userDisplayed->surname}</h4>
+        </div>
+        <div class="panel-body">
+            <form n:name=one2OneForm>
+                <textarea n:name=note class="form-control" placeholder="Tak co ses dozvěděl?" rows="10"></textarea>
+                <input n:name=id_member value="{$id_member}">
+                <br />
+                <button n:name=submit class="btn btn-primary btn-lg btn-block">Přidat</button>
+                <br />
+                <div class="media" n:foreach="$records as $record">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{$record->created|date:'%d.%m.%Y'}</h4>
+                        {!$record->note|nl2br}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
