@@ -1,0 +1,226 @@
+{block content}
+
+<style>
+    .btn span.glyphicon {
+        opacity: 0;
+    }
+    .btn.active span.glyphicon {
+        opacity: 1;
+    }
+
+    .thumbnail {
+        height: 190px
+    }
+
+    .btn-group {
+        position: absolute;
+        bottom: 35px;
+    }
+</style>
+
+<div class="container">
+    {if $round != "off" && !$repeat}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>HR tool</h4>
+            </div>
+            <div class="panel-body">
+                <form n:name=hrSurveyForm class=form>
+                <p>HR tool slouží ke zjištění zdraví týmu. Ke každé zkoumané problematice přísluší krátký popis, který může ale nemusí popisovat reálný stav. Pokud popis s reálným stavem dle tebe souhlasí, zvol zelenou. Pokud spíše ne, zvol oranžovou. A pokud textu přímo odporuje, zvol červenou. Snaž se omezit používání oranžové na minimum.</p>
+                <div class="row display-flex">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Kamarádství</h3>
+                                <p>Ostatní členové BESTu jsou moji velmi dobří kamarádi.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=one:1 type="radio" id="one" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=one:2 type="radio" id="one" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=one:3 type="radio" id="one" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Angličtina</h3>
+                                <p>Líbí se mi, že většina LMs probíhá v angličtině. Necítím se při tom nekomfortně.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=two:1 type="radio" id="two" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=two:2 type="radio" id="two" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=two:3 type="radio" id="two" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Vztahy</h3>
+                                <p>Se všemi členy vycházím velmi dobře, nikomu se nevyhýbám.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=three:1 type="radio" id="three" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=three:2 type="radio" id="three" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=three:3 type="radio" id="three" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Hejty</h3>
+                                <p>Nemám pocit, že mě ostatní lidi hejtují, nebo nemají rádi.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=four:1 type="radio" id="four" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=four:2 type="radio" id="four" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=four:3 type="radio" id="four" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Zodpovědnost</h3>
+                                <p>Nebojím se si na sebe vzít větší zodpovědnost (tj. stát se MOčkem nějaké akce).</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=five:1 type="radio" id="five" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=five:2 type="radio" id="five" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=five:3 type="radio" id="five" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Pomoc</h3>
+                                <p>Cítím, že když se mi nedaří, někdo mi pomůže.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=six:1 type="radio" id="six" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=six:2 type="radio" id="six" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=six:3 type="radio" id="six" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Efektivita</h3>
+                                <p>Naše local meetingy jsou vysoce efektivní.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=seven:1 type="radio" id="seven" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=seven:2 type="radio" id="seven" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=seven:3 type="radio" id="seven" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Splín</h3>
+                                <p>Mám splínových chvilek jak šafránu.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=eight:1 type="radio" id="eight" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=eight:2 type="radio" id="eight" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=eight:3 type="radio" id="eight" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Spirit</h3>
+                                <p>Spirit je mimořádně kvalitní a líbí se mi, jakým směrem se v AP ubírá.</p>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-success">
+                                        <input n:name=nine:1 type="radio" id="nine" autocomplete="off">
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-warning">
+                                        <input n:name=nine:2 type="radio" id="nine" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                    <label class="btn btn-danger">
+                                        <input n:name=nine:3 type="radio" id="nine" autocomplete="off">                                    <span class="glyphicon glyphicon-ok"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input n:name=round value="{$round}">
+                    <button n:name=submit class="btn btn-primary btn-lg btn-block">Odpálit to</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    {elseif $round == "off"}
+        <div class="alert alert-info">
+            HR tool je momentálně vypnutý. Tak třeba jindy ;-)
+        </div>
+    {else}
+        <div class="alert alert-danger">
+            Už jsi jednou hlasoval/a. Tak zas někdy jindy.
+        </div>
+    {/if}
+</div>

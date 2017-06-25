@@ -264,9 +264,6 @@ class NominationsPresenter extends BaseSecuredPresenter {
         $this->makeStringsNull($values);
         $id_election = $this->getParameter('id_election');
 
-        //     \Tracy\Debugger::enable();
-        // \Tracy\Debugger::barDump($form['1']->isFilled());
-
         // Editing existing election
         if ($id_election) {
             $election = $this->database->table('members_elections')->get($id_election);
