@@ -22,10 +22,22 @@ class ToolsPresenter extends BaseSecuredPresenter
     * @var \App\Model\UsersModel */
     public $usersModel;
 
+    /** 
+    * @inject
+    * @var \App\Model\ImageStorage */
+    public $imageStorage;
+
     public function __construct(Nette\Database\Context $database)
     {
         parent::__construct();
         $this->database = $database;
+    }
+
+    public function beforeRender() {
+        $this->template->addFilter('getimage', function ($id_member) {
+            $member = $this->database->table('members_member')->get($id_member);
+            return $this->imageStorage->getProfileImage($member);
+        });
     }
 
     public function actionExportContacts($id) {

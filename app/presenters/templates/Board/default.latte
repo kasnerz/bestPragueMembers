@@ -16,7 +16,6 @@
   {foreach $board as $pos => $id_member}
     {if $id_member != null}
     <div class="col-sm-3">
-
       <div class="board-person">
        <div class="board-image">
             <a n:href="Profile:show $id_member"><img class="img-circle" src={$members->get($id_member)|getimage|noescape}></a>

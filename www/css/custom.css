@@ -156,6 +156,21 @@ form .error {
     height: 90px;
 }
 
+.hof-person {
+    margin-top: 30px;
+}
+
+.hof-panel {
+    margin: auto;
+    margin-top: 25px;
+    width: 80%;
+    text-align: center;
+}
+
+.hof-info {
+    margin: 15px 100px 15px 100px;
+}
+
 .board-image img {
     width: 75px;
     height: 75px;

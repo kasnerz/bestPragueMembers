@@ -79,6 +79,7 @@
                 <li><a n:href="Tools:hr">HR tool</a></li>
 	          </ul>
 	        </li>
+	        <li {ifCurrent Tools:about}class="active"{/ifCurrent}><a n:href="Tools:about">O aplikaci</a></li>
 	      </ul>
 	      <ul class="nav navbar-nav navbar-right">
 	      	{if $user->isInRole('admin')}
