@@ -9,23 +9,34 @@
   <div n:class="panel, panel-primary">
   <div class="panel-heading"><h3 class="panel-title">Board</h3></div>
   <div class="panel-body">
-           <h3 style="margin-top: 5px">President</h3>
-           <p>
-           <a n:href="Profile:show $board['President']">
-           {$members->get($board['President'])->name} {$members->get($board['President'])->surname}
-           </a>
-           </p>
 
-           {foreach $board as $pos => $id_member}
-           {if $id_member and $pos != 'President'}
-           <h4>{$pos}</h4>
-             <p>
-             <a n:href="Profile:show $id_member">
-             {$members->get($id_member)->name} {$members->get($id_member)->surname}
-             </a>
-             </p>
-          {/if}
-          {/foreach}
+  <!-- VPs -->
+
+  <div class="row">
+  {foreach $board as $pos => $id_member}
+    {if $id_member != null}
+    <div class="col-sm-3">
+
+      <div class="board-person">
+       <div class="board-image">
+            <a n:href="Profile:show $id_member"><img class="img-circle" src={$members->get($id_member)|getimage|noescape}></a>
+       </div>
+       <div class="board-name">
+       <h4>{$pos}</h4>
+         <a n:href="Profile:show $id_member">
+         {$members->get($id_member)->name} {$members->get($id_member)->surname}
+         </a>
+      </div>
+      </div>
+  </div>
+  {/if}
+  {/foreach}
+  </div>
+  
+
+            
+
+           
     </div>
    </div>
   </div>

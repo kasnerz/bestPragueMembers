@@ -14,10 +14,22 @@ class BoardPresenter extends BaseSecuredPresenter
     /** @var Nette\Database\Context */
     private $database;
 
+    /** 
+    * @inject
+    * @var \App\Model\ImageStorage */
+    public $imageStorage;
+
     public function __construct(Nette\Database\Context $database)
     {
         parent::__construct();
         $this->database = $database;
+    }
+
+     public function beforeRender() {
+        $this->template->addFilter('getimage', function ($id_member) {
+            $member = $this->database->table('members_member')->get($id_member);
+            return $this->imageStorage->getProfileImage($member);
+        });
     }
 
     public function renderDefault()
@@ -56,20 +68,14 @@ class BoardPresenter extends BaseSecuredPresenter
             $members[$id] = $row['name'] . " " . $row['surname'];
         }
 
-        // First argument is position ID in database (is there a better option?)
-        $form->addSelect('1', 'President', $members);
-        $form->addSelect('5', 'Secretary', $members);
-        $form->addSelect('2', 'VP for PR', $members);
-        $form->addSelect('3', 'VP for HR', $members);
-        $form->addSelect('4', 'VP for CR', $members);
-        $form->addSelect('6', 'Treasurer', $members);
-        $form->addSelect('7', 'Vivaldi Responsible', $members);
-        $form->addSelect('8', 'IT Coordinator', $members);
+        $board_pos = $this->database->table('members_board_pos');
 
+        foreach ($board_pos as $id => $row) {
+            $form->addSelect($id, $row->name, $members);
+        }
 
         $form->addSubmit('submit', 'Uložit');
         $form->onSuccess[] = array($this, 'postFormSucceeded');
-
 
         // All of this is only additional code that makes Nette form look good in Bootstrap
         // setup form rendering
