@@ -11,77 +11,77 @@
             <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zpět
         </button>
     </a>
-          <table id="table" data-toggle="table"
-                data-search="true"
-                data-show-refresh="true"
-                data-show-toggle="true"
-                data-show-columns="true"
-                data-show-export="true"
-                data-minimum-count-columns="2"
-                data-pagination="true"
-                data-sortable="true"
-                data-row-style="rowStyle"
-                data-buttons-align="left"
-                data-search-align="left"
-                data-toolbar="#toolbar"
-                data-toolbar-align="right"
-                >
+    <table id="table" data-toggle="table"
+        data-search="true"
+        data-show-refresh="true"
+        data-show-toggle="true"
+        data-show-columns="true"
+        data-show-export="true"
+        data-minimum-count-columns="2"
+        data-pagination="true"
+        data-sortable="true"
+        data-row-style="rowStyle"
+        data-buttons-align="left"
+        data-search-align="left"
+        data-toolbar="#toolbar"
+        data-toolbar-align="right">
 
-                <thead>
-                    <tr>
-                        <th data-field="id" data-sortable="true">Id</th>
-                        <th data-field="datetime" data-sortable="true">Datum</th>
-                        <th data-field="points" data-sortable="true">Počet mrkví</th>
-                        <th data-field="name" data-sortable="true">Jméno</th>
-                        <th data-field="activity" data-sortable="true">Aktivita</th>
-                        <th data-field="description" data-sortable="true">Poznámky</th>
-                        {if $user->isInRole('admin')}
-                        <th data-field="remove" data-events=operateEvents>Akce</th>
-                        {/if}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr n:foreach="$points as $point">
-                        {var $member = $members->get($point->id_member)}
-                        <td>{$point->id_points}</td>
-                        <td>{$point->datetime|date:'%Y/%m/%d'}</td>
-                        <td>{if $point->points}
-                                {$point->points}
-                            {else}
-                                {$point->ref(id_activity)->points}
-                            {/if}</td>
-                        <td><a n:href="Profile:show $point->id_member">{$member->name} {$member->surname}</a></td>
-                        <td>{if $point->name}
-                                {$point->name}
-                            {else}
-                                {$point->ref(id_activity)->name}
-                            {/if}
-                        </td>
-                        <td>{if $point->description}
-                                {$point->description}
-                            {else}
-                                {$point->ref(id_activity)->description}
-                            {/if}
-                        </td>
-                        {if $user->isInRole('admin')}
-                        <td>
-                        <a style="margin-right:10px" class="ok" n:href="approve! $point->id_points" title="Approve">
-                            <i class="glyphicon glyphicon-ok"></i>
-                        </a>
-                          <a class="remove" n:href="delete! $point->id_points" title="Remove">
-                            <i class="glyphicon glyphicon-remove"></i>
+        <thead>
+            <tr>
+                {if $user->isInRole('admin')}
+                    <th data-field="remove" data-events=operateEvents>Akce</th>
+                {/if}
+                <th data-field="datetime" data-sortable="true">Datum</th>
+                <th data-field="name" data-sortable="true">Jméno</th>
+                <th data-field="activity" data-sortable="true">Aktivita</th>
+                <th data-field="description" data-sortable="true">Poznámky</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr n:foreach="$points as $point">
+                {var $member = $members->get($point->id_member)}
+                {if $user->isInRole('admin')}
+                    <td>
+                        <div class="col-lg-6">
+                            <a n:href="approve! $point->id_points" title="Approve">
+                                <button type="button" class="btn btn-success btn-sm">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                </button>
                             </a>
-                        </td>
-                        {/if}
-                    </tr>
-                </tbody>
-            </table>
-  </div>
+                        </div>
+                        <div class="col-lg-6"">
+                            <a n:href="delete! $point->id_points" title="Remove">
+                                <button type="button" class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </a>
+                        </div>
+                    </td>
+                {/if}
+                <td>{$point->datetime|date:'%d.%m.%Y'}</td>
+                <td><a n:href="Profile:show $point->id_member">{$member->name} {$member->surname}</a>
+                    {if $point->points}
+                        {$point->points}
+                    {else}
+                        {$point->ref(id_activity)->points}
+                    {/if}
+                </td>
+                <td>{if $point->name}
+                        {$point->name}
+                    {else}
+                        {$point->ref(id_activity)->name}
+                    {/if}
+                </td>
+                <td>{if $point->description}
+                        {$point->description}
+                    {else}
+                        {$point->ref(id_activity)->description}
+                    {/if}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<script>
-   
-</script>
 
 {/block}
 

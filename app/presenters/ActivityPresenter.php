@@ -254,7 +254,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
     public function handleDelete($id) {
         $this->database->table('members_points')->get($id)->delete();
         $this->flashMessage('Aktivita smazána.');
-        $this->redirect('Activity:');
+        $this->redirect('Activity:approvals');
         // $this->redirect('Homepage:');
     }
 
