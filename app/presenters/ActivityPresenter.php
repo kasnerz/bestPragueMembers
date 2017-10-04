@@ -58,7 +58,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->template->points = $this->database->table('members_points');
     }
 
-    public function renderDefault() {
+    public function renderList() {
         $this->template->members = $this->database->table('members_member');
         $this->template->points = $this->database->table('members_points')->where('NOT approved', false)->order('id_points DESC');
 
@@ -74,6 +74,25 @@ class ActivityPresenter extends BaseSecuredPresenter {
         }
         
         $this->template->db_members = $this->db_members;
+    }
+
+    public function renderDefault() {
+        $user = $this->getUser()->getId();
+
+        $currentMonthBegin = new Nette\Utils\DateTime("first day of this month midnight");
+        $currentMonthEnd = new Nette\Utils\DateTime("first day of next month midnight");
+        $previousMonthBegin = new Nette\Utils\DateTime("first day of last month midnight");
+
+        if($currentMonthBegin->format("m") > 6) //from july to december
+            $halfYearBegin = new Nette\Utils\DateTime("first day of this year July midnight");
+        else //from january to july
+            $halfYearBegin = new Nette\Utils\DateTime("first day of this year January midnight");
+
+        $halfYearEnd = $halfYearBegin->modifyClone("+6 month");
+
+        $this->template->pointsThisMonth = $this->database->table('members_points')->where("approved = 1 AND id_member = $user AND datetime > '$currentMonthBegin' AND datetime < '$currentMonthEnd'")->sum("points");
+        $this->template->pointsLastMonth = $this->database->table('members_points')->where("approved = 1 AND id_member = $user AND datetime > '$previousMonthBegin' AND datetime < '$currentMonthBegin'")->sum("points");
+        $this->template->pointsHalfYear = $this->database->table('members_points')->where("approved = 1 AND id_member = $user AND datetime > '$halfYearBegin' AND datetime < '$halfYearEnd'")->sum("points");
     }
 	
 	public function renderApprovals() {
@@ -142,16 +161,13 @@ class ActivityPresenter extends BaseSecuredPresenter {
             $form->addCheckbox($id);
         }
 
-
         $form->addSelect('id_activity', 'Aktivita*', $this->activities);
         $form->addText('name', 'Název');
         $form->addTextArea('description', 'Popis');
 
         $form->addText('points', 'Počet mrkví')->setType('number');
 
-        $form->addDate('datetime', 'Datum*', 'Y-m-d')
-              ->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m-d', date("Y-m-d")));
-
+        $form->addDate('datetime', 'Datum*', 'Y-m-d')->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m-d', date("Y-m-d")));
 
         $form->addSubmit('submit', 'Zapsat');
         $form->onSuccess[] = array($this, 'pointsFormBatchSucceeded');
@@ -163,10 +179,6 @@ class ActivityPresenter extends BaseSecuredPresenter {
 
     protected function createComponentPointsForm()
     {
-        $user = $this->getUser();
-        $members = array();
-
-
         $form = new Form;
 
         $form->addSelect('id_activity', 'Aktivita*', $this->activities);
@@ -210,15 +222,19 @@ class ActivityPresenter extends BaseSecuredPresenter {
         } else {
             $id_batch = $last_row->id_batch + 1;
         }
-		
+
+        if(!$values['points'])
+            $points = $this->database->table('members_activities')->where("id_activity", $values['id_activity'])->fetch();
+        else
+            $points = $values['points'];
 
         foreach ($values as $i => $value) {
             if (is_numeric($i) && $value != NULL) {
-                $points = $this->database->table('members_points')->insert(array(
+                $this->database->table('members_points')->insert(array(
                     'id_member' => $i,
                     'id_batch' => $id_batch,
                     'id_activity' => $values['id_activity'],
-                    'points' => $values['points'],
+                    'points' => $points,
                     'name' => $values['name'],
                     'description' => $values['description'],
                     'datetime' => $values['datetime'],

@@ -1,86 +1,48 @@
 {block head}
-
+    <style>
+        .carrot-amount {
+            color: orange;
+            font-weight: bold;
+            font-size: 52px;
+        }
+    </style>
 {/block}
 
 
 {block content}
 
 <div class="pane">
-          <table id="table" data-toggle="table"
-                data-search="true"
-                data-show-refresh="true"
-                data-show-toggle="true"
-                data-show-columns="true"
-                data-show-export="true"
-                data-minimum-count-columns="2"
-                data-pagination="true"
-                data-sortable="true"
-                data-row-style="rowStyle"
-                data-buttons-align="left"
-                data-search-align="left"
-                data-toolbar="#toolbar"
-                data-toolbar-align="right"
-                >
-
-				<div class="pull-right"><a n:href="Activity:batch">
-                     <button type="button" class="btn btn-default btn-sm">
-                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Přidat mrkve
-                     </button>
-                </a></div>
-                <thead>
-                    <tr>
-                        <th data-field="id" data-sortable="true">Id</th>
-                        <th data-field="datetime" data-sortable="true">Datum</th>
-                        <th data-field="points" data-sortable="true">Počet mrkví</th>
-                        <th data-field="name" data-sortable="true">Jméno</th>
-                        <th data-field="activity" data-sortable="true">Aktivita</th>
-                        <th data-field="description" data-sortable="true">Poznámky</th>
-                        {if $user->isInRole('admin')}
-                        <th data-field="remove" data-events=operateEvents>Akce</th>
-                        {/if}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr n:foreach="$points as $point">
-                        {var $member = $members->get($point->id_member)}
-                        <td>{$point->id_points}</td>
-                        <td>{$point->datetime|date:'%Y/%m/%d'}</td>
-                        <td>{if $point->points}
-                                {$point->points}
-                            {else}
-                                {$point->ref(id_activity)->points}
-                            {/if}</td>
-                        <td><a n:href="Profile:show $point->id_member">{$member->name} {$member->surname}</a></td>
-                        <td>{if $point->name}
-                                {$point->name}
-                            {else}
-                                {$point->ref(id_activity)->name}
-                            {/if}
-                        </td>
-                        <td>{if $point->description}
-                                {$point->description}
-                            {else}
-                                {$point->ref(id_activity)->description}
-                            {/if}
-                        </td>
-                        {if $user->isInRole('admin')}
-                        <td>
-                          <a class="remove" n:href="delete! $point->id_points" title="Remove">
-                            <i class="glyphicon glyphicon-remove"></i>
-                            </a>
-                        </td>
-                        {/if}
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <a n:href="Activity:batch">
+        <button type="button" class="btn btn-primary btn-lg btn-block">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Rozdat mrkve
+        </button>
+    </a>
+    <div class="col-sm-4" style="text-align: center">
+        <h2>Tento měsíc</h2>
+        <span class="carrot-amount">{if $pointsThisMonth == NULL}0{else}{$pointsThisMonth}{/if}</span>
     </div>
-  </div>
+    <div class="col-sm-4" style="text-align: center">
+        <h2>Minulý měsíc</h2>
+        <span class="carrot-amount">{if $pointsLastMonth == NULL}0{else}{$pointsLastMonth}{/if}</span>
+    </div>
+    <div class="col-sm-4" style="text-align: center">
+        <h2>Tento půlrok</h2>
+        <span class="carrot-amount">{if $pointsHalfYear == NULL}0{else}{$pointsHalfYear}{/if}</span>
+    </div>
+    {if $user->isInRole('admin')}
+        <a n:href="Activity:approvals">
+            <button type="button" class="btn btn-default btn-lg btn-block">
+                Schvalování mrkví
+            </button>
+        </a>
+        <br />
+        <a n:href="Activity:list">
+            <button type="button" class="btn btn-default btn-lg btn-block">
+                Rozdané mrkve
+            </button>
+        </a>
+    {/if}
 </div>
-
-<script>
-   
-</script>
 
 {/block}
 
