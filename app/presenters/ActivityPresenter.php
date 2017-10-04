@@ -243,11 +243,8 @@ class ActivityPresenter extends BaseSecuredPresenter {
             }
 
         }
-		if($user->isInRole('admin')){
-            $this->flashMessage("Aktivita byla úspěšně zapsána.", 'success');
-		}else{
-			$this->flashMessage("Žádost o mrkvičky odeslána ke schválení. Keep it up!");
-		}
+
+        $this->flashMessage("Díky za návrh na mrkvičky! HRoyt na to koukne :-)", 'success');
         $this->redirect('Activity:default');
     }
 
