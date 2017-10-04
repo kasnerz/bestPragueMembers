@@ -48,9 +48,14 @@ class ActivityPresenter extends BaseSecuredPresenter {
     }
 
     public function renderBatch() {
-        $this->template->members = $this->database->table('members_member');
+        $user = $this->getUser()->getId();
+
+        if($this->getUser()->getRoles()[0] == "admin")
+            $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1");
+        else
+            $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1 AND id_member != $user");
+
         $this->template->points = $this->database->table('members_points');
-        $this->template->db_members = $this->db_members;
     }
 
     public function renderDefault() {
@@ -217,7 +222,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
                     'name' => $values['name'],
                     'description' => $values['description'],
                     'datetime' => $values['datetime'],
-					'approved' => $user->isInRole('admin')
+					'approved' => 0
                     ));
             }
 
