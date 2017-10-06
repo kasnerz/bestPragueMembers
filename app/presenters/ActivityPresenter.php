@@ -147,21 +147,13 @@ class ActivityPresenter extends BaseSecuredPresenter {
 
     protected function createComponentPointsFormBatch()
     {
-        $user = $this->getUser();
-        
-        if (!($user->isInRole('admin'))) {
-            return;
-        }
-
-        $members = array();
-
         $form = new Form;
 
         foreach ($this->db_members as $id => $row) {
             $form->addCheckbox($id);
         }
 
-        $form->addSelect('id_activity', 'Aktivita*', $this->activities);
+        $form->addSelect('id_activity', 'Aktivita', $this->activities);
         $form->addText('name', 'Název');
         $form->addTextArea('description', 'Popis');
 
