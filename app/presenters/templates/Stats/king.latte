@@ -4,7 +4,7 @@
         <div class="king-month">
             <h2>{$month}</h2>
             {foreach $group as $king}
-            <a class="king-person king-rank-{$iterator->counter}" n:href="Activity:?id_member={$king->id_member}&month={$month}">
+            <a class="king-person king-rank-{$iterator->counter}" n:href="Activity:list?id_member={$king->id_member}&month={$month}">
                 <div class="king-image">
                     <div class="king-image-fill" style="background-image: url('{$king->id_member|getimage|noescape}')"></div>
                     <div class="king-image-border"></div>

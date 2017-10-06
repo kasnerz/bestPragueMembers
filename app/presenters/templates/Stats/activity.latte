@@ -13,7 +13,7 @@
         <tr>
             <td><a n:href="Profile:show $member->id_member"><img src="{$member->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
                 {$member->name} {$member->surname}</td>
-            <td><h4><a n:href="Activity:?id_member={$member->id_member}&month={$months[0]}">{$member->total}</a></h4></td>
+            <td><h4><a n:href="Activity:list?id_member={$member->id_member}&month={$months[0]}">{$member->total}</a></h4></td>
         </tr>
         {/foreach}
         </tbody>
@@ -33,7 +33,7 @@
         <tr>
             <td><a n:href="Profile:show $member->id_member"><img src="{$member->id_member|getimage}" class="img" alt="Profile photo" width="40"></a>
                 {$member->name} {$member->surname}</td>
-            <td><h4><a n:href="Activity:?id_member={$member->id_member}&month={$months[1]}">{$member->total}</a></h4></td>
+            <td><h4><a n:href="Activity:list?id_member={$member->id_member}&month={$months[1]}">{$member->total}</a></h4></td>
         </tr>
         {/foreach}
         </tbody>
