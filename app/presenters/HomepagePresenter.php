@@ -44,6 +44,7 @@ class HomepagePresenter extends BaseSecuredPresenter
 
 
         $this->template->members = $this->database->table('members_member')->order('name ASC');
+        $this->template->currentUser = $this->database->table("members_member")->where("id_member", $this->getUser()->getId())->fetch();
         $this->template->carrot32 = $this->imageStorage->getCarrot(32);
     }
 }
