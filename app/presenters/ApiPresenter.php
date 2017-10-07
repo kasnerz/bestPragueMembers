@@ -42,6 +42,7 @@ class ApiPresenter extends BasePresenter
                 "id_member" => $member->id_member,
                 "points" => $cardPoints,
                 "name" => $cardName,
+                "description" => $cardName,
                 "datetime" => new Nette\Utils\DateTime("now"),
                 "approved" => 0
             )
