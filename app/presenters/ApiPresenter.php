@@ -22,15 +22,32 @@ class ApiPresenter extends BasePresenter
 
     public function actionAddCarrots($data)
     {
+        $dataInArray = explode("\n", $data);
+
+        $cardFullName = $dataInArray[0];
+
+        $trelloName = substr($cardFullName, 1);
+        $trelloName = explode("]", $trelloName);
+
+        $cardPoints = $trelloName[0];
+        $cardName = $trelloName[1];
+
+        $trelloUsername = substr($dataInArray[5], 10);
+
+        $member = $this->database->table("members_member")->where("trello_username", $trelloUsername)->fetch();
+
         $this->database->table("members_points")->insert(
             array(
                 "id_batch" => 3,
-                "id_member" => 109,
-                "points" => 999,
-                "description" => $data
+                "id_member" => $member->id_member,
+                "points" => $cardPoints,
+                "name" => $cardName,
+                "datetime" => new Nette\Utils\DateTime("now"),
+                "approved" => 0
             )
         );
 
         return 200;
     }
 }
+
