@@ -145,6 +145,7 @@ class ProfilePresenter extends BaseSecuredPresenter {
         $form->addSelect("faculty", "Fakulta", $faculties);
 
         $form->addTextArea('fb', 'Facebook')->addCondition($form::FILLED)->addRule(Form::URL);
+        $form->AddText("trello_username", "Username v Trellu");
 
         if ($id_member) { // user already exists
              $form->addUpload('image', 'Fotka')->setOption('description', 'nejlépe ve čtvercovém formátu ;)')
