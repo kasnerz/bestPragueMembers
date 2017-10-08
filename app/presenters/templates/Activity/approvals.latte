@@ -28,7 +28,7 @@
                     {$member->name} {$member->surname} - {if $point->points}{$point->points}{else}{$point->ref(id_activity)->points}{/if} mrkví
                 </div>
                 <div class="panel-body">
-                    {ifset $member->name}{$point->ref(id_author)->name} {$point->ref(id_author)->surname}{/ifset} navrhuje {if $point->points}{$point->points}{else}{$point->ref(id_activity)->points}{/if} mrkví<br />
+                    {ifset $member->id_author}{$point->ref(id_author)->name} {$point->ref(id_author)->surname}{/ifset} navrhuje {if $point->points}{$point->points}{else}{$point->ref(id_activity)->points}{/if} mrkví<br />
                     {$point->datetime|date:'%d.%m.%Y'} <br />
                     {if $point->name}{$point->name}{else}{$point->ref(id_activity)->name}{/if}<br />
                     {if $point->description}{$point->description}<br />{elseif $point->ref(id_activity)->description}{$point->ref(id_activity)->description}<br />{else}{/if}
