@@ -216,4 +216,25 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->flashMessage("Aktivita byla upravena");
         $this->redirect("Activity:change");
     }
+
+    public function createComponentNewActivityForm() {
+       $form = new Form();
+
+       $form->addText("name")->setAttribute("placeholder", "název aktivity");
+       $form->addText("points")->setAttribute("placeholder", "počet mrkví");
+       $form->addSubmit("submit", "Přidat");
+
+       $form->onSuccess[] = array($this, "newActivityFormSubmitted");
+
+       return $form;
+    }
+
+    public function newActivityFormSubmitted(Form $form) {
+        $val = $form->getValues();
+
+        $this->database->table("members_activities")->insert(array("name" => $val->name, "points" => $val->points));
+
+        $this->redirect("Activity:change");
+        $this->flashMessage("Aktivita přidána!");
+    }
 }

@@ -17,6 +17,13 @@
         <br />
         <br />
 
+        {form newActivityForm}
+            {input points} {input name} {input submit}
+        {/form}
+
+        <br />
+        <br />
+
         <table id="dataOn">
         <tr n:foreach="$activities as $activity">
             <td>{$activity->points}</td>
