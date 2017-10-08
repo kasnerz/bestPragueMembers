@@ -1,5 +1,11 @@
 {block content}
 
+    <style>
+        #carrots {
+            display: none;
+        }
+    </style>
+
 <div class="pane">
     <a n:href="Activity:">
         <button type="button" class="btn btn-default btn-sm">
@@ -13,21 +19,22 @@
       <div class="panel-body">
       {form pointsFormBatch}
       <table class="table table-responsive">
-      <tr class="required">
+      <tr>
+          <td colspan="2">
+            {input method}
+          </td>
+      </tr>
+      <tr class="required" id="activity">
           <th>{label id_activity /}</th>
           <td>{input id_activity class => form-control}</td>
+      </tr>
+      <tr class="required" id="carrots">
+          <th>{label points /}</th>
+          <td>{input points class => form-control}</td>
       </tr>
       <tr class="required">
           <th>{label name /}</th>
           <td>{input name class => form-control}</td>
-      </tr>
-      <tr class="required">
-          <th>{label description /}</th>
-          <td>{input description class => form-control}</td>
-      </tr>
-      <tr class="required">
-          <th>{label points /}</th>
-          <td>{input points class => form-control}</td>
       </tr>
       <tr class="required">
           <th>{label datetime /}</th>
@@ -51,4 +58,15 @@
       </div>
       </div>
 
-</div>
+    </div>
+    <script>
+        $('#frm-pointsFormBatch-method').change(function() {
+            if ($(this).prop('checked')) {
+                $('#carrots').show();
+                $('#activity').hide();
+            } else {
+                $('#carrots').hide();
+                $('#activity').show();
+            }})
+    </script>
+{/block}

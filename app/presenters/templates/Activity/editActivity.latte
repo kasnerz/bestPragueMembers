@@ -1,0 +1,31 @@
+{block content}
+<div class="pane">
+    <a n:href="Activity:change">
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zpět
+        </button>
+    </a>
+    <br />
+    <br />
+    <table>
+    {form editActivityForm}
+        <tr>
+            <td>Název: </td>
+            <td>{input name}</td>
+        </tr>
+        <tr>
+            <td>Počet mrkví: </td>
+            <td>{input points}</td>
+        </tr>
+        <tr>
+            <td>Aktivní: </td>
+            <td>{input active}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{input submit}</td>
+        </tr>
+    {/form}
+    </table>
+</div>
+
+{/block}

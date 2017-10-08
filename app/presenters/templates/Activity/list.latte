@@ -37,7 +37,6 @@
                 <th data-field="points" data-sortable="true">Počet mrkví</th>
                 <th data-field="name" data-sortable="true">Jméno</th>
                 <th data-field="activity" data-sortable="true">Aktivita</th>
-                <th data-field="description" data-sortable="true">Poznámky</th>
                 {if $user->isInRole('admin')}
                     <th data-field="remove" data-events=operateEvents>Akce</th>
                 {/if}
@@ -54,24 +53,19 @@
                     {$point->ref(id_activity)->points}
                     {/if}</td>
                 <td><a n:href="Profile:show $point->id_member">{$member->name} {$member->surname}</a></td>
-                <td>{if $point->name}
+                <td>
+                    {if !$point->id_activity}
                         {$point->name}
                     {else}
-                        {$point->ref(id_activity)->name}
-                    {/if}
-                </td>
-                <td>{if $point->description}
-                        {$point->description}
-                    {else}
-                        {$point->ref(id_activity)->description}
+                        {$point->ref(id_activity)->name} {if $point->name} ({$point->name}) {/if}
                     {/if}
                 </td>
                 {if $user->isInRole('admin')}
-                    <td>
-                        <a class="remove" n:href="delete! $point->id_points" title="Remove">
-                            <i class="glyphicon glyphicon-remove"></i>
-                        </a>
-                    </td>
+                <td>
+                    <a class="remove" n:href="delete! $point->id_points" title="Remove">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </td>
                 {/if}
             </tr>
             </tbody>

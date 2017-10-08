@@ -1,0 +1,46 @@
+{block content}
+    <style>
+        #dataOff {
+            display: none;
+        }
+    </style>
+
+    <div class="pane">
+        <a n:href="Admin:">
+            <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Zpět
+            </button>
+        </a>
+
+        <input type="checkbox" id="chkactive" data-toggle="toggle" data-on="Neaktivní" data-off="Aktivní" data-size="small">
+
+        <br />
+        <br />
+
+        <table id="dataOn">
+        <tr n:foreach="$activities as $activity">
+            <td>{$activity->points}</td>
+            <td>{$activity->name}</td>
+            <td><a n:href="Activity:editActivity $activity->id_activity">upravit</a></td>
+        </tr>
+        </table>
+        <table id="dataOff">
+            <tr n:foreach="$activitiesOff as $activity">
+                <td>{$activity->points}</td>
+                <td>{$activity->name}</td>
+                <td><a n:href="Activity:editActivity $activity->id_activity">upravit</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        $('#chkactive').change(function() {
+            if ($(this).prop('checked')) {
+                $('#dataOn').hide();
+                $('#dataOff').show();
+            } else {
+                $('#dataOn').show();
+                $('#dataOff').hide();
+            }})
+    </script>
+{/block}

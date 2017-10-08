@@ -18,7 +18,6 @@ class ActivityPresenter extends BaseSecuredPresenter {
     private $imageStorage;
 
     private $db_members;
-    private $activities;
 
     public function __construct(Nette\Database\Context $database) {
         parent::__construct();
@@ -30,14 +29,6 @@ class ActivityPresenter extends BaseSecuredPresenter {
                     ->where("id_rank.active", 1)
                     ->select('id_member, members_member.name, members_member.surname')
                     ->order('name ASC');
-        
-        $db_activities = $this->database->table('members_activities')->select('id_activity, name, points, description')->order('name');
-        
-        $this->activities = array();
-
-        foreach ($db_activities as $id => $row) {
-            $this->activities[$id] = $row['name'] . " (" . $row['points'] . " b.)";
-        }
     }
 
     public function renderNew() {
@@ -52,13 +43,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
     }
 
     public function renderBatch() {
-        $user = $this->getUser()->getId();
-
-        if($this->getUser()->getRoles()[0] == "admin")
-            $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1");
-        else
-            $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1 AND id_member != $user");
-
+        $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1");
         $this->template->points = $this->database->table('members_points');
     }
 
@@ -128,21 +113,25 @@ class ActivityPresenter extends BaseSecuredPresenter {
         });
     }
 
-    protected function createComponentPointsFormBatch()
-    {
+    protected function createComponentPointsFormBatch() {
         $form = new Form;
 
         foreach ($this->db_members as $id => $row) {
             $form->addCheckbox($id);
         }
 
-        $form->addSelect('id_activity', 'Aktivita', $this->activities);
+        $db_activities = $this->database->table('members_activities')->where("active", 1)->select('id_activity, name, points, description')->order('name');
+
+        foreach ($db_activities as $id => $row) {
+            $activities[$id] = $row['name'] . " (" . $row['points'] . " b.)";
+        }
+
+        $form->addSelect('id_activity', 'Aktivita', $activities);
         $form->addText('name', 'Název');
         $form->addTextArea('description', 'Popis');
-
         $form->addText('points', 'Počet mrkví')->setType('number');
-
         $form->addDate('datetime', 'Datum*', 'Y-m-d')->setDefaultValue(\Nette\Utils\DateTime::createFromFormat('Y-m-d', date("Y-m-d")));
+        $form->addCheckbox("method")->setAttribute("data-toggle", "toggle")->setAttribute("data-on", "Vlastní")->setAttribute("data-off", "Zadat aktivitou");
 
         $form->addSubmit('submit', 'Zapsat');
         $form->onSuccess[] = array($this, 'pointsFormBatchSucceeded');
@@ -154,16 +143,19 @@ class ActivityPresenter extends BaseSecuredPresenter {
     {
         $this->makeStringsNull($values);
 
-        if(!$values['points'])
-            $points = $this->database->table('members_activities')->where("id_activity", $values['id_activity'])->fetch();
-        else
-            $points = $values['points'];
+        if(!$values->method) {
+            $activity = $values['id_activity'];
+            $points = NULL;
+        } else {
+            $activity = NULL;
+            $points = $values->points;
+        }
 
         foreach ($values as $i => $value) {
             if (is_numeric($i) && $value != NULL) {
                 $this->database->table('members_points')->insert(array(
                     'id_member' => $i,
-                    'id_activity' => $values['id_activity'],
+                    'id_activity' => $activity,
                     'points' => $points,
                     'name' => $values['name'],
                     'description' => $values['description'],
@@ -188,5 +180,40 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->database->table('members_points')->get($id)->update(array('approved' => 1));
         $this->flashMessage('Aktivita schválena.');
         $this->redirect('Activity:approvals');
+    }
+
+    public function renderChange() {
+        $this->template->activities = $this->database->table("members_activities")->where("active", 1)->order("points")->fetchAll();
+        $this->template->activitiesOff = $this->database->table("members_activities")->where("active", 0)->order("points")->fetchAll();
+
+    }
+
+    public function renderEditActivity($idActivity) {
+        $activity = $this->database->table("members_activities")->where("id_activity", $idActivity)->fetch();
+
+        $this["editActivityForm"]->setDefaults(array("name" => $activity->name, "points" => $activity->points, "idActivity" => $activity->id_activity, "active" => $activity->active));
+    }
+
+    public function createComponentEditActivityForm() {
+        $form = new Form();
+
+        $form->addText("name");
+        $form->addText("points");
+        $form->addCheckbox("active");
+        $form->addHidden("idActivity");
+        $form->addSubmit("submit", "Uložit");
+
+        $form->onSuccess[] = array($this, "editActivityFormSubmitted");
+
+        return $form;
+    }
+
+    public function editActivityFormSubmitted(Form $form)  {
+        $val = $form->getValues();
+
+        $this->database->table("members_activities")->where("id_activity", $val->idActivity)->update(array("name" => $val->name, "points" => $val->points, "active" => $val->active));
+
+        $this->flashMessage("Aktivita byla upravena");
+        $this->redirect("Activity:change");
     }
 }
