@@ -25,7 +25,7 @@
         {var $member = $members->get($point->id_member)}
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    {ifset $member->name}{$member->name} {$member->surname}{/if} - {if $point->points}{$point->points}{else}{$point->ref(id_activity)->points}{/if} mrkví
+                    {ifset $member->name}{$member->name} {$member->surname}{/ifset} - {if $point->points}{$point->points}{else}{$point->ref(id_activity)->points}{/if} mrkví
                 </div>
                 <div class="panel-body">
                     {$point->ref(id_author)->name} {$point->ref(id_author)->surname} navrhuje {if $point->points}{$point->points}{else}{$point->ref(id_activity)->points}{/if} mrkví<br />
