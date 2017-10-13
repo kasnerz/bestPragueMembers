@@ -26,9 +26,8 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->database = $database;
 
         $this->db_members = $this->database->table('members_member')
-                    ->where("id_rank.active", 1)
                     ->select('id_member, members_member.name, members_member.surname')
-                    ->order('name ASC');
+                    ->where("id_rank < 5");
     }
 
     public function renderNew() {
@@ -43,7 +42,7 @@ class ActivityPresenter extends BaseSecuredPresenter {
     }
 
     public function renderBatch() {
-        $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1");
+        $this->template->db_members = $this->database->table('members_member')->where("id_rank < 5");
         $this->template->points = $this->database->table('members_points');
     }
 
