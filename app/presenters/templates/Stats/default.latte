@@ -9,25 +9,17 @@
 
 <div class="pane">
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active"><a data-toggle="tab" href="#activity">Mrkve</a></li>
-      <li role="presentation"><a data-toggle="tab" href="#king">Zlatá mrkev</a></li>
-      <li role="presentation"><a data-toggle="tab" href="#members">Členové</a></li>
-      <li role="presentation"><a data-toggle="tab" href="#new_members">Noví členové</a></li>
+      <li role="presentation" class="active"><a data-toggle="tab" href="#graphs">Grafy</a></li>
+      <li role="presentation"><a data-toggle="tab" href="#summary">Přehled</a></li>
       <li role="presentation"><a data-toggle="tab" href="#angel_tree">Angel tree</a></li>
     </ul>
 
     <div class="tab-content">
-        <div id="activity" class="tab-pane active">
-            {include 'activity.latte'}
-        </div>
-        <div id="king" class="tab-pane">
-            {include 'king.latte'}
+      <div id="graphs" class="tab-pane active">
+            {include 'graphs.latte'}
       </div>
-      <div id="members" class="tab-pane">
-            {include 'members.latte'}
-      </div>
-      <div id="new_members" class="tab-pane">
-            {include 'new_members.latte'}
+      <div id="summary" class="tab-pane">
+            {include 'summary.latte'}
       </div>
       <div id="angel_tree" class="tab-pane">
             {include 'angel_tree.latte'}
@@ -38,7 +30,7 @@
 $(function(){
   // to automatically resize charts when changing tabs
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-   console.log('Changing tabs'); window.dispatchEvent(new Event('resize')); 
+    window.dispatchEvent(new Event('resize')); 
   })
 
   $('.nav-tabs a').click(function(e) {

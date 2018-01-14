@@ -39,7 +39,10 @@ class StatsPresenter extends BaseSecuredPresenter
     public function renderDefault()
     {
         $this->template->ranks = $this->usersModel->getRanks();
-        $this->template->ranks_json = Nette\Utils\Json::encode($this->template->ranks);
+        $this->template->ranks_json = Nette\Utils\Json::encode($this->usersModel->getActiveRanks());
+        $this->template->faculties = $this->usersModel->getFacultiesWithGender();
+        $this->template->wgs = $this->usersModel->getActiveWgs();
+        $this->template->ages = $this->usersModel->getActiveAges();
 
         $join_stats = [
             'all' => [
@@ -108,7 +111,6 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
                 $this->template->kings[$kingPeriod] = $result;
             }
         }
-        //print_r($this->template->kings);
 
     }
 }

@@ -14,10 +14,20 @@ class ActivityPresenter extends BaseSecuredPresenter {
     /** @var Nette\Database\Context */
     private $database;
 
-    /** @var ImageStorage */
-    private $imageStorage;
+    /** 
+    * @inject
+    * @var \App\Model\ImageStorage */
+    public $imageStorage;
+
+    /** 
+    * @inject
+    * @var \App\Model\UsersModel */
+    public $usersModel;
+
 
     private $db_members;
+
+
 
     public function __construct(Nette\Database\Context $database) {
         parent::__construct();
@@ -70,6 +80,11 @@ class ActivityPresenter extends BaseSecuredPresenter {
     public function renderDefault() {
         $user = $this->getUser()->getId();
 
+        $this->template->members = $this->database->table('members_member');
+        $this->template->points = $this->database->table('members_points')->where('NOT approved', false)->order('id_points DESC');
+        $this->template->db_members = $this->db_members;
+
+
         $currentMonthBegin = new Nette\Utils\DateTime("first day of this month midnight");
         $currentMonthEnd = new Nette\Utils\DateTime("first day of next month midnight");
         $previousMonthBegin = new Nette\Utils\DateTime("first day of last month midnight");
@@ -84,6 +99,76 @@ class ActivityPresenter extends BaseSecuredPresenter {
         $this->template->pointsThisMonth = $this->database->table('members_points')->where("approved = 1 AND id_member = $user AND datetime > '$currentMonthBegin' AND datetime < '$currentMonthEnd'")->sum("points");
         $this->template->pointsLastMonth = $this->database->table('members_points')->where("approved = 1 AND id_member = $user AND datetime > '$previousMonthBegin' AND datetime < '$currentMonthBegin'")->sum("points");
         $this->template->pointsHalfYear = $this->database->table('members_points')->where("approved = 1 AND id_member = $user AND datetime > '$halfYearBegin' AND datetime < '$halfYearEnd'")->sum("points");
+
+
+
+        $join_stats = [
+            'all' => [
+                'rank' => $this->usersModel->getJoinedStats('members_rank.name'),
+                'gender' => $this->usersModel->getJoinedStats('members_member.gender'),
+                'wg' => $this->usersModel->getJoinedStats('members_member.wg')
+            ],
+            'active' => [
+                'rank' => $this->usersModel->getJoinedStats('members_rank.name', true),
+                'gender' => $this->usersModel->getJoinedStats('members_member.gender', true),
+                'wg' => $this->usersModel->getJoinedStats('members_member.wg', true)
+            ]
+        ];
+        $this->template->join_stats = Nette\Utils\Json::encode($join_stats);
+        $angel_tree = $this->database->query('SELECT COALESCE(member.wg,"?") as member_wg, CONCAT(member.name, " ", member.surname) as member_name, 
+            COALESCE(CONCAT(angel.name, " ", angel.surname),"The Archangel") as angel_name
+            FROM members_member member
+            LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs('member_name');
+                    $this->template->angel_tree = Nette\Utils\Json::encode($angel_tree);
+
+        $this->template->points_activity = $this->database->query('SELECT members_member.id_member, members_member.name, members_member.surname, members_points.approved AS approved, SUM( COALESCE( members_points.points, members_activities.points ) ) AS sum
+                                                            FROM members_points
+                                                            JOIN members_activities USING (id_activity)
+                                                            JOIN members_member USING (id_member)
+                                                            WHERE approved = 1
+                                                            GROUP BY id_member
+                                                            ORDER BY sum DESC');
+
+
+            $months = array(date('Y/m', strtotime("now")), date('Y/m', strtotime("-1 month")));
+            $this->template->months = $months;
+            $this->template->points_month = [];
+
+            for($i=0; $i<2; $i++) {
+                $month = $months[$i];
+
+            $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,members_points.approved as approved,
+                SUM(COALESCE(members_points.points,members_activities.points,0)) as total,
+                DATE_FORMAT(members_points.datetime,'%Y/%m') as period FROM `members_points` 
+                INNER JOIN `members_member` USING (id_member)
+                LEFT JOIN `members_activities` USING (id_activity)
+                WHERE approved = 1
+                GROUP BY members_member.id_member,period
+                HAVING period='$month'
+                ORDER BY total DESC,members_member.joined DESC");
+
+                        $this->template->points_month[$month] = $result;
+                    }
+
+
+                    $this->template->kings = [];
+                    for($i=1;$i<12;$i++) {
+                        $kingPeriod = date('Y/m', strtotime("-$i month"));
+                        $result = $this->database->query("SELECT members_member.id_member,members_member.name,surname,members_points.approved as approved,
+                SUM(COALESCE(members_points.points,members_activities.points,0)) as total,
+                DATE_FORMAT(members_points.datetime,'%Y/%m') as period FROM `members_points` 
+                INNER JOIN `members_member` USING (id_member)
+                LEFT JOIN `members_activities` USING (id_activity)
+                WHERE approved = 1
+                GROUP BY members_member.id_member,period
+                HAVING period='$kingPeriod'
+                ORDER BY total DESC,members_member.joined DESC
+                LIMIT 3");
+
+                        if ($result->fetch()) {
+                            $this->template->kings[$kingPeriod] = $result;
+                        }
+                    }
     }
 	
 	public function renderApprovals() {
@@ -107,7 +192,8 @@ class ActivityPresenter extends BaseSecuredPresenter {
     }
 
     public function beforeRender() {
-        $this->template->addFilter('getimage', function ($member) {
+        $this->template->addFilter('getimage', function ($id_member) {
+            $member = $this->database->table('members_member')->get($id_member);
             return $this->imageStorage->getProfileImage($member);
         });
     }

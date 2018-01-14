@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-md-12">
+       {foreach $kings as $month => $group}
+        <div class="king-month">
+            <h2>{$month}</h2>
+            {foreach $group as $king}
+            <a class="king-person king-rank-{$iterator->counter}" n:href="Activity:list?id_member={$king->id_member}&month={$month}">
+                <div class="king-image">
+                    <div class="king-image-fill" style="background-image: url('{$king->id_member|getimage|noescape}')"></div>
+                    <div class="king-image-border"></div>
+                </div>
+                <h3 class="king-name">{$king->name} {$king->surname}</h3>
+                <h4 class="king-points">{$king->total}</h4>
+            </a>
+           {/foreach}
+        </div>
+       {/foreach}
+    </div>
+    <style type="text/css">
+    .king-person {
+        display: inline-block;
+        margin-right: 40px;
+        margin-bottom: 30px;
+        text-align: center;
+        color: black;
+    }
+    .king-person:hover {
+        opacity: 0.95;
+        text-decoration: none;
+    }
+    .king-image {
+        position: relative;
+    }
+    .king-image-fill {
+        background-size: cover;
+        position: absolute;
+    }
+    .king-rank-1 .king-image, .king-rank-1 .king-image-fill  {
+        width: 244px;
+        height: 244px;
+    }
+    .king-rank-2 .king-image, .king-rank-2 .king-image-fill  {
+        width: 175px;
+        height: 175px;
+    }
+    .king-rank-3 .king-image, .king-rank-3 .king-image-fill  {
+        width: 148px;
+        height: 148px;
+    }
+    .king-rank-1 .king-image-fill  {
+        top: 47px;
+        left: 24px;
+    }
+    .king-rank-2 .king-image-fill  {
+        top: 61px;
+        left: 14px;
+    }
+    .king-rank-3 .king-image-fill  {
+        top: 55px;
+        left: 12px;
+    }
+    .king-rank-1 .king-image, .king-rank-1 .king-image-border  {
+        width: 300px;
+        height: 320px;
+    }
+    .king-rank-2 .king-image, .king-rank-2 .king-image-border  {
+        width: 200px;
+        height: 250px;
+    }
+    .king-rank-3 .king-image, .king-rank-3 .king-image-border  {
+        width: 170px;
+        height: 213px;
+    }
+    .king-image-border {
+        background-size: cover;
+        position: absolute;
+        top: 0; left: 0;
+    }
+    .king-rank-1 .king-image-border {
+        background-image: url('/www/images/mrkev1.png');
+    }
+    .king-rank-2 .king-image-border {
+        background-image: url('/www/images/mrkev2.png');
+    }
+    .king-rank-3 .king-image-border {
+        background-image: url('/www/images/mrkev3.png');
+    }
+    .king-person h3 {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .king-person h4 {
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    .king-rank-1 h3, .king-rank-1:hover h3 {
+        font-size: 30px;
+        color: hsl(23, 100%, 45%);
+        text-decoration: none;
+    }
+    .king-rank-2 h3, .king-rank-2:hover h3 {
+        font-size: 22px;
+        color: #444;
+        text-decoration: none;
+    }
+    .king-rank-3 h3, .king-rank-3:hover h3{
+        font-size: 20px;
+        color: hsla(15,50%,50%,1);
+        text-decoration: none;
+    }
+    .king-rank-1 h4, .king-rank-1:hover h4 {
+        font-size: 30px;
+        color: #5C873E;
+        text-decoration: none;
+    }
+    .king-rank-2 h4, .king-rank-2:hover h4 {
+        font-size: 18px;
+        color: #777;
+        text-decoration: none;
+    }
+    .king-rank-3 h4, .king-rank-3:hover h4 {
+        font-size: 18px;
+        color: #888;
+        color: hsla(15,50%,60%,1);
+        text-decoration: none;
+    }
+    </style>
+</div>

@@ -1,39 +1,227 @@
-<script type="text/javascript">
-$(function () {
-    var data = {$ranks|noescape},
-        name = 'Počet členů';
-    var chart = $('#container-ranks').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: ''
-        },
-        tooltip: {
-            // pointFormat: '{ series.name }: <b>{ point.y }</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b> {l}point.name{r}</b>: {l}point.y{r}',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-                },
-                animation: false
-            }
-        },
-        series: [{
-            name: name,
-            colorByPoint: true,
-            data: data
-        }]
+<div class="row">
+
+    <div class="container">
+      <div class="row">
+            <div class="col-md-6">
+                <div id="container-ranks" class="graph graph-small"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="container-faculties" class="graph graph-small"></div>
+            </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6">
+                <div id="container-age" class="graph graph-small"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="container-wgs" class="graph graph-small"></div>
+            </div>
+      </div>
+      {include 'new_members.latte'}
+    </div>
+    
+
+    
+
+
+    <script type="text/javascript">
+    $(function () {
+
+        /* ranks */
+
+        $('#container-ranks').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Aktivní členové'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b> {l}point.name{r}</b>: {l}point.y{r}',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    },
+                    animation: false
+                }
+            },
+            series: [{
+                name: 'Počet členů',
+                colorByPoint: true,
+                data: {$ranks_json|noescape}
+            }]
+        });
     });
-});
-</script>
+
+    /* faculties */
+
+    $('#container-faculties').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Fakulty'
+            },
+            xAxis: {
+                categories: {$faculties}.faculties
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                title: {
+                    text: ''
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            legend: {
+                align: 'right',
+                x: -30,
+                verticalAlign: 'top',
+                y: 25,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                headerFormat: '<b>{l}point.x{r}</b><br/>',
+                pointFormat: '{l}series.name{r}: {l}point.y{r}<br/>Total: {l}point.stackTotal{r}'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                    }
+                }
+            },
+            series: {$faculties}.people
+        });
+
+
+        /* age */
+
+        var categories = [
+            '0-3', '4-6', '7-9', '10-12',
+            '13-15', '16-18', '19-21', '22-24',
+            '25-27', '28-30', '31-33', '35-36',
+            '37-39', '40-42', '43-45', '46-48',
+            '49+'
+        ];
+
+        $('#container-age').highcharts({
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Věková pyramida'
+            },
+            subtitle: {
+                text: 'Měsíce od začátku v BESTu'
+            },
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1
+                }
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1
+                }
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return Math.abs(this.value);
+                    }
+                }
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + ', měsíců ' + this.point.category + '</b><br/>' +
+                        'Počet členů: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                }
+            },
+
+            series: [{
+                name: 'dicks',
+                data: {$ages}.dicks
+            }, {
+                name: 'boobs',
+                data: {$ages}.boobs
+            }]
+        });
+
+
+        /* wgs */
+        $('#container-wgs').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false
+            },
+            title: {
+                text: 'Working<br>Groups',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 40
+            },
+            tooltip: {
+                pointFormat: 'Počet členů: <b>{l}point.y{r}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: -50,
+                        style: {
+                            fontWeight: 'bold',
+                            color: 'black'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 90,
+                    center: ['50%', '75%']
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Working Group',
+                innerSize: '50%',
+                data: {$wgs}
+            }]
+        });
+
+    </script>
+</div>

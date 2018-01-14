@@ -1,0 +1,71 @@
+
+
+<div class="pane">
+    <div class="container">
+      <div class="row">
+            <div class="col-md-4">
+                <div id="table-ranks">
+                    <table class="table table-striped table-bordered">
+                    <thead >
+                      <tr>
+                        <th>Role</th>
+                        <th>Počet členů</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $ranks as $rank}
+                    <tr>
+                        <td>{$rank["name"]} </td>
+                        <td>{$rank["y"]}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+           <div class="col-md-4">
+                <div id="table-faculties">
+                        <table class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Fakulta</th>
+                            <th>Počet členů</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {for $i = 0; $i < count($faculties["faculties"]); $i++}
+                        <tr>
+                            <td>{$faculties["faculties"][$i]} </td>
+                            <td>{$faculties["people"][0]["data"][$i] + $faculties["people"][1]["data"][$i]}</td> <!-- boobs + dicks together -->
+                        </tr>
+                        {/for}
+                        </tbody>
+                      </table>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div id="table-wgs">
+
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>WG</th>
+                            <th>Počet členů</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {foreach $wgs as $wg}
+                        <tr>
+                            <td>{$wg[0]} </td>
+                            <td>{$wg[1]}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                      </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
