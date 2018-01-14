@@ -56,7 +56,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
                 $me = $google->getProfile();
 
                 \Tracy\Debugger::enable();
-                \Tracy\Debugger::log($me->email . "," . $me->id);   // log user login
 
                 try {
                     $existing = $this->authorizationModel->findUser($me);
