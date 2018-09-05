@@ -43,6 +43,7 @@ class StatsPresenter extends BaseSecuredPresenter
         $this->template->faculties = $this->usersModel->getFacultiesWithGender();
         $this->template->wgs = $this->usersModel->getActiveWgs();
         $this->template->ages = $this->usersModel->getActiveAges();
+        $this->template->config = $this->getConfig();
 
         $join_stats = [
             'all' => [
@@ -112,5 +113,9 @@ LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs(
             }
         }
 
+    }
+
+    public function getConfig() {
+        return file_get_contents(__DIR__ ."/../config/config.local.neon");
     }
 }

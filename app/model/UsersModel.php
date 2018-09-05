@@ -65,7 +65,7 @@ class UsersModel extends Nette\Object
             $diff = $member->joined->diff($now);
             $diff_months =  ($diff->y) * 12 + $diff->m;
 
-            $idx = min((int) floor($diff_months / 3),17);
+            $idx = min((int) floor($diff_months / 3),16);
 
             if ($member->gender == "M") {
                 $dicks[$idx]--;
