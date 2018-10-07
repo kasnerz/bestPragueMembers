@@ -39,7 +39,7 @@ class ImageStorage extends Nette\Object
     {
         $image = $member->image;
 
-        if ($image === '') {
+        if (is_null($image) || $image === '') {
             if (is_null($member->google_image)) {
                 $nameLetter = substr($member->name, 0, 1);
                 $surnameLetter = substr($member->surname, 0, 1);
