@@ -6,11 +6,6 @@
 {block content}
 
 <div class="pane">
-    {if !($currentUser->email && $currentUser->fb && $currentUser->faculty && $currentUser->telephone && $currentUser->tshirt && $currentUser->trello_username)}
-        <div class="alert alert-danger" role="alert">
-            HRoyt je smutnej, protože mu chybí některé informace o tobě, <a n:href="Profile:edit $currentUser->id_member">dej mu je prosím</a>.
-        </div>
-    {/if}
     <div id="members" class="tab-pane in active">
         <div id="toolbar">
             <input type="checkbox" id="chkactive" data-toggle="toggle" data-on="Vše" data-off="Aktivní" data-size="small">
@@ -59,12 +54,7 @@
 
                         <td class="hidden-xs"><img src={$member|getimage} style="width:24px;height:24px;"></td>
                         <td>
-                            {if ($member->email && $member->fb && $member->faculty && $member->telephone && $member->tshirt && $member->trello_username) || $member->id_rank == 1}
-                                <a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a>
-                            {else}
-                                <a n:href="Profile:show $member->id_member" style="color: red">{$member->name} {$member->surname}</a>
-                            {/if}
-
+                            <a n:href="Profile:show $member->id_member">{$member->name} {$member->surname}</a>
                         </td>
                         <td>{$member->email}</td>
                         <td class="hidden-xs">{$member->wg}</td>
