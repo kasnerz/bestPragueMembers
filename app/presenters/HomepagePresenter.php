@@ -36,13 +36,6 @@ class HomepagePresenter extends BaseSecuredPresenter
 
     public function renderDefault()
     {
-        $activeMembers = $this->database->table('members_member')->where("id_rank < 5 AND id_rank > 1")->count();
-        $dicks = $this->database->table('members_member')->where("gender = 'M' AND id_rank < 5 AND id_rank > 1")->count();
-
-        $this->template->dicksRatio = round($dicks*100/$activeMembers);
-        $this->template->boobsRatio = 100-$this->template->dicksRatio;
-
-
         $this->template->members = $this->database->table('members_member')->order('name ASC');
         $this->template->currentUser = $this->database->table("members_member")->where("id_member", $this->getUser()->getId())->fetch();
         $this->template->carrot32 = $this->imageStorage->getCarrot(32);
