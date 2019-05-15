@@ -12,8 +12,8 @@
 
         var angel_rows = []
         for(i in angel_tree) {
-            wg = angel_tree[i]['member_wg']
-            angel_rows.push([{ v:angel_tree[i]['member_name'], f:angel_tree[i]['member_name']+'<div style="font-size: 90%">'+wg+'</div>' }, angel_tree[i]['angel_name'], wg])
+            wg = angel_tree[i]['member_rank']
+            angel_rows.push([{ v:angel_tree[i]['member_name'], f:angel_tree[i]['member_name'] }, angel_tree[i]['angel_name'], wg])
         }
 
         google.charts.load('current', { packages:["orgchart"] });
@@ -29,9 +29,13 @@
             data.addRows(angel_rows);
             for(i in angel_rows) {
                 var colors = {
-                    'HR' : '#ffcc55',
-                    'PR' : '#8BCEF5',
-                    'CR' : '#C298F1',
+                    '7' : '#F7F7F7',
+                    '6' : '#F28AA7',
+                    '5' : '#F4F7BE',
+                    '4' : '#FFCC55',
+                    '3' : '#85C5EA',
+                    '2' : '#E5F77D',
+                    '1' : '#C298F1',
                     '?' : '#ccc'
                 }
                 var wg = angel_rows[i][2];

@@ -58,7 +58,7 @@ class StatsPresenter extends BaseSecuredPresenter
             ]
         ];
         $this->template->join_stats = Nette\Utils\Json::encode($join_stats);
-        $angel_tree = $this->database->query('SELECT COALESCE(member.wg,"?") as member_wg, CONCAT(member.name, " ", member.surname) as member_name, 
+        $angel_tree = $this->database->query('SELECT COALESCE(member.id_rank,"?") as member_rank, CONCAT(member.name, " ", member.surname) as member_name, 
 COALESCE(CONCAT(angel.name, " ", angel.surname),"The Archangel") as angel_name
 FROM members_member member
 LEFT JOIN members_member angel ON angel.id_member=member.id_angel')->fetchPairs('member_name');
