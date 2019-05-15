@@ -230,8 +230,8 @@ class ProfilePresenter extends BaseSecuredPresenter {
         if ($user->isInRole('admin') || $user->id == $id_member) {
             $this['postForm']['submit']->caption = 'Uložit';
             $memberArr = $member->toArray();
-            // unset($memberArr["wg"]);
-            dump($memberArr);
+            unset($memberArr["wg"]);
+            // dump($memberArr);
             $this['postForm']->setDefaults($memberArr);
         }
     }
